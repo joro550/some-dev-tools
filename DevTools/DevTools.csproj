@@ -1,9 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
-
+    <ItemGroup>
+      <Folder Include="Pages\Encoders" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Encoders\Base64\Decode.razor" />
+      <AdditionalFiles Include="Pages\Encoders\Base64\Encode.razor" />
+      <AdditionalFiles Include="Pages\Encoders\UrlEncoding\Decode.razor" />
+      <AdditionalFiles Include="Pages\Encoders\UrlEncoding\Encode.razor" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Base64\Decode.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Base64\Encode.razor" />
+    </ItemGroup>
 </Project>

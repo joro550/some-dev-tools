@@ -1,0 +1,15 @@
+﻿<div class='nav-item px-3'>
+    @TopLevelLink(new EventCallback(null, Toggle))
+
+    <nav class='@CssClass'>
+        @Content
+    </nav>
+</div>
+@code {
+    [Parameter] public RenderFragment Content { get; set; }
+    [Parameter] public RenderFragment<EventCallback> TopLevelLink { get; set; }
+    
+    private bool _collapse = true;
+    private void Toggle() => _collapse = !_collapse;
+    private string CssClass => _collapse ? "collapse" : "1";
+}

@@ -1,0 +1,82 @@
+﻿@page "/Base64/Decode"
+@using System.Text
+@using DevTools.Data
+@inject EncodingService EncodingService
+
+<h3>Decode</h3>
+
+<div class='form-floating mb-4'>
+  <textarea @bind='Input' class='form-control' placeholder='Input' id='inputTextArea'></textarea>
+  <label for='inputTextArea'>Input</label>
+  <button class='mt-2 btn btn-primary' @onclick='Save'> Save</button>
+</div>
+
+<div class='form-floating'>
+  <textarea readonly @bind='_output' class='form-control readonly' placeholder='Output' id='outputTextArea' style='height: 100px'>
+  </textarea>
+  <label for='outputTextArea'>Output</label>
+</div>
+
+
+@if (_encodings.Any())
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        
+        @foreach (var encoding in _encodings)
+        {
+            <tr>
+                <td>@encoding.Input</td>
+                <td>@encoding.Output</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+  private string _output = string.Empty;
+  private string _input = string.Empty;
+  private List<Base64Decoding> _encodings = new();
+  
+  private string Input
+  {
+    get => _input;
+    set 
+    { 
+      _input = value;
+      DecodeInput(value);
+    }
+  }
+  
+  private void DecodeInput(string value)
+  {
+    if(string.IsNullOrWhiteSpace(value))
+      return;
+
+    var byteSpan = new Span<byte>();
+    if (Convert.TryFromBase64String(value, byteSpan, out _))
+    {
+      _output = Encoding.UTF8.GetString(byteSpan);
+    }
+  }
+  
+  protected override async Task OnInitializedAsync() => await ReloadTable();
+
+  private async Task ReloadTable()
+  {
+    var encodings = await EncodingService.GetAsync();
+    _encodings = encodings.OfType<Base64Decoding>().ToList();
+  }
+  
+  private async Task Save()
+  {
+    if (string.IsNullOrEmpty(_input) || string.IsNullOrEmpty(_output))
+      return;
+        
+    await EncodingService.Add(new Base64Decoding(_input, _output));
+    await ReloadTable();
+  }
+}

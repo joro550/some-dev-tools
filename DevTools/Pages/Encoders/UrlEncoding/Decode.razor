@@ -1,0 +1,39 @@
+﻿@page "/Url/Decode"
+@using System.Web
+<h3>Decode</h3>
+
+<div class='form-floating mb-4'>
+    <textarea @bind='Input' @bind:event='oninput' class='form-control' placeholder='Input' id='inputTextArea'></textarea>
+    <label for='inputTextArea'>Input</label>
+    @* <button class='mt-2 btn btn-primary' @onclick='Save'> Save</button> *@
+</div>
+
+<div class='form-floating mb-4'>
+    <textarea readonly @bind='_output' class='form-control' placeholder='Output' id='outputTextArea' style='height: 100px'>
+    </textarea>
+    <label for='outputTextArea'>Output</label>
+</div>
+
+@code {
+    
+    private string _input = string.Empty;
+    private string _output = string.Empty;
+    
+    private string Input
+    {
+        get => _input;
+        set 
+        { 
+            _input = value;
+            EncodeInput(value);
+        }
+    }
+    
+    private void EncodeInput(string value)
+    {
+        if(string.IsNullOrWhiteSpace(value))
+            return;
+
+        _output = HttpUtility.UrlDecode(value);
+    }
+}
