@@ -1,0 +1,39 @@
+﻿@page "/Base64/Decode"
+@using System.Text
+
+<h3>Decode</h3>
+
+<div class='form-floating mb-4'>
+  <textarea @bind='Input' class='form-control' placeholder='Input' id='inputTextArea'></textarea>
+  <label for='inputTextArea'>Input</label>
+</div>
+
+<div class='form-floating'>
+  <textarea readonly @bind='_output' class='form-control readonly' placeholder='Output' id='outputTextArea' style='height: 100px'>
+  </textarea>
+  <label for='outputTextArea'>Output</label>
+</div>
+
+@code {
+  private string _output = string.Empty;
+  private string _input = string.Empty;
+  
+  private string Input
+  {
+    get => _input;
+    set 
+    { 
+      _input = value;
+      DecodeInput(value);
+    }
+  }
+  
+  private void DecodeInput(string value)
+  {
+    if(string.IsNullOrWhiteSpace(value))
+      return;
+
+    var bytes = Convert.FromBase64String(value);
+    _output = Encoding.UTF8.GetString(bytes);
+  }
+}
