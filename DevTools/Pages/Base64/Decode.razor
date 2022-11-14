@@ -33,7 +33,10 @@
     if(string.IsNullOrWhiteSpace(value))
       return;
 
-    var bytes = Convert.FromBase64String(value);
-    _output = Encoding.UTF8.GetString(bytes);
+    var byteSpan = new Span<byte>();
+    if (Convert.TryFromBase64String(value, byteSpan, out _))
+    {
+      _output = Encoding.UTF8.GetString(byteSpan);
+    }
   }
 }

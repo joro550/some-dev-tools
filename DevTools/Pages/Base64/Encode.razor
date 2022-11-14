@@ -1,21 +1,48 @@
 ﻿@page "/Base64/Encode"
+
 @using System.Text
+@using DevTools.Data
+@inject EncodingService EncodingService
+
 <h3>Encode</h3>
 
 <div class='form-floating mb-4'>
     <textarea @bind='Input' @bind:event='oninput' class='form-control' placeholder='Input' id='inputTextArea'></textarea>
     <label for='inputTextArea'>Input</label>
+    
+    <button class='mt-2 btn btn-primary' @onclick='Save'> Save</button>
 </div>
 
-<div class='form-floating'>
+<div class='form-floating mb-4'>
     <textarea readonly @bind='_output' class='form-control' placeholder='Output' id='outputTextArea' style='height: 100px'>
   </textarea>
     <label for='outputTextArea'>Output</label>
 </div>
 
+@if (_encodings.Any())
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        
+        @foreach (var encoding in _encodings)
+        {
+            <tr>
+                <td>@encoding.Input</td>
+                <td>@encoding.Output</td>
+            </tr>
+        }
+    </table>
+}
+
+
 @code {
     private string _input = string.Empty;
     private string _output = string.Empty;
+
+    private List<Base64Encoding> _encodings = new();
     
     private string Input
     {
@@ -34,5 +61,22 @@
         
         var bytes = Encoding.UTF8.GetBytes(value);
         _output = Convert.ToBase64String(bytes);
+    }
+
+    private async Task Save()
+    {
+        if (string.IsNullOrEmpty(_input) || string.IsNullOrEmpty(_output))
+            return;
+        
+        await EncodingService.Add(new Base64Encoding(_input, _output));
+        await ReloadTable();
+    }
+
+    protected override async Task OnInitializedAsync() => await ReloadTable();
+
+    private async Task ReloadTable()
+    {
+        var encodings = await EncodingService.GetAsync();
+        _encodings = encodings.OfType<Base64Encoding>().ToList();
     }
 }

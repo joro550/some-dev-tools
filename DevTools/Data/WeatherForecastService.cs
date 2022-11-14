@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Caching.Memory;
+
 namespace DevTools.Data;
 
 public class WeatherForecastService
@@ -17,3 +19,30 @@ public class WeatherForecastService
         }).ToArray());
     }
 }
+
+
+public class EncodingService
+{
+    private readonly IMemoryCache _memoryCache;
+
+    public EncodingService(IMemoryCache memoryCache) 
+        => _memoryCache = memoryCache;
+
+    public async Task Add(InputOutput encoding)
+    {
+        var item = await _memoryCache.GetOrCreateAsync("encoding", 
+            _ => Task.FromResult(new List<InputOutput>()));
+
+        item.Add(encoding);
+        _memoryCache.Set("encoding", item);
+    }
+
+    public async Task<List<InputOutput>> GetAsync() =>
+        await _memoryCache.GetOrCreateAsync("encoding", 
+            _ => Task.FromResult(new List<InputOutput>()));
+}
+
+public record Base64Encoding(string Input, string Output) : InputOutput(Input, Output);
+public record Base64Decoding(string Input, string Output): InputOutput(Input, Output);
+
+public record InputOutput(string Input, string Output);
