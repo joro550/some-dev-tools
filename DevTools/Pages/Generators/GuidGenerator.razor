@@ -1,18 +1,20 @@
 ﻿@page "/Generator/Guid"
 
-<h3>Guid Generator</h3>
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Guid Generator
+</h1>
 
-<div class='mb-3'>
-  <label class='form-label'>Number to generate</label>
-  <input type='number' max='1000' @bind='_amountToGenerate' @bind:event='oninput' class='form-control' placeholder='Number of UUIDs'>
-</div>
-
-<button class='btn btn-primary mt-3' @onclick='Generate'>Generate</button>
-
-<div class='form-floating mt-3 mb-4'>
-    <textarea readonly @bind='_output' class='form-control' placeholder='Output' id='outputTextArea' style='height: 200px'>
-    </textarea>
-    <label for='outputTextArea'>Output</label>
+<div class='mt-2 mb-3'>
+  <div class='relative z-0 mb-6 w-full group'>
+      <input @bind='_amountToGenerate'  type='number' class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>Number to generate</label>
+  </div>
+  <div class='relative z-0 mb-6 w-full group'>
+      <textarea readonly @bind='_output' type='text' style='height: 100px' class='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer' placeholder=" " >
+      </textarea>
+      <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>Output</label>
+  </div>
+  <button @onclick='Generate' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Generate</button>
 </div>
 
 @code {
@@ -24,7 +26,6 @@
         _amountToGenerate = _amountToGenerate > 1000 ? 1000 : _amountToGenerate;
         
         var generatedGuids = new List<string>();
-        
         for (var i = 0; i < _amountToGenerate; i++)
         {
             generatedGuids.Add(Guid.NewGuid().ToString());

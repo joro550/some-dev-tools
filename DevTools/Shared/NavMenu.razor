@@ -1,88 +1,54 @@
-﻿<div class='top-row ps-3 navbar navbar-dark'>
-    <div class='container-fluid'>
-        <a class='navbar-brand' href=''>DevTools</a>
-        <button title='Navigation menu' class='navbar-toggler' @onclick='ToggleNavMenu'>
-            <span class='navbar-toggler-icon'></span>
-        </button>
-    </div>
-</div>
+﻿<aside class='w-64 h-screen bg-gray-50 dark:bg-gray-800' >
+      <div class='py-4 px-3' >
+         <a href='/' class='flex items-center pl-2.5 mb-5'>
+            <span class='self-center text-xl font-semibold whitespace-nowrap dark:text-white'>DevTools</span>
+         </a>
 
-<div @onclick='ToggleNavMenu'>
-    <nav class='flex-column'>
-        <div class='nav-item px-3'>
-            <NavLink class='nav-link' href='' Match='NavLinkMatch.All'>
-                <span class='oi oi-home' aria-hidden='true'></span> Home
-            </NavLink>
-        </div>
-
-        <CollapsableLinks>
-            <TopLevelLink>
-                <NavLink class='nav-link' href='#' @onclick='context'>
-                    Encoding
-                </NavLink>
-            </TopLevelLink>
-            <Content>
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='Base64/Encode' >
-                        Base64 Encode
-                    </NavLink>
-                </div>
-
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='Base64/Decode'>
-                        Base64 Decode
-                    </NavLink>
-                </div>
-
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='Url/Encode'>
-                        Url Encode
-                    </NavLink>
-                </div>
-
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='Url/Decode'>
-                        Url Decode
-                    </NavLink>
-                </div>
-            </Content>
-        </CollapsableLinks>
-
-        <CollapsableLinks>
-            <TopLevelLink>
-                <NavLink class='nav-link' href='#' @onclick='context'>
-                    Converters
-                </NavLink>
-            </TopLevelLink>
-            <Content>
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='/Convert/Number-Base'>
-                        Number Base
-                    </NavLink>
-                </div>
-            </Content>
-        </CollapsableLinks>
-
-        <CollapsableLinks>
-            <TopLevelLink>
-                <NavLink class='nav-link' href='#' @onclick='context'>
-                    Generators
-                </NavLink>
-            </TopLevelLink>
-            <Content>
-                <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='/Generator/Guid'>
-                        Guid Generator
-                    </NavLink>
-                </div>
-            </Content>
-        </CollapsableLinks>
-    </nav>
-</div>
-
-@code {
-    private bool _collapseNavMenu = true;
-
-    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : "";
-    private void ToggleNavMenu() => _collapseNavMenu = !_collapseNavMenu;
-}
+         <ul class='space-y-2'>
+            <li>
+               <a href='#' class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                  <i class='fa-solid fa-house'></i>
+                  <span class="ml-3">Home</span>
+               </a>
+            </li>
+            
+            <li>
+               <NavBarDropDown LinkText='Encoding' IconClass='fa-solid fa-suitcase'>
+                  <ul class='py-2 space-y-2'>
+                     <li>
+                        <a href='/Base64/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Encode</a>
+                     </li>
+                     <li>
+                        <a href='/Base64/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Decode</a>
+                     </li>
+                     <li>
+                        <a href='/Url/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Encode</a>
+                     </li>
+                     <li>
+                        <a href='/Url/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Decode</a>
+                     </li>
+                  </ul>
+               </NavBarDropDown>
+            </li>
+            
+            @* <li> *@
+            @*    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"> *@
+            @*       <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> *@
+            @*       <span class="flex-1 ml-3 whitespace-nowrap">Kanban</span> *@
+            @*       <span class="inline-flex justify-center items-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span> *@
+            @*    </a>  *@
+            @* </li> *@
+            
+            <li>
+               <NavBarDropDown LinkText='Generators' IconClass='fa-solid fa-wand-magic-sparkles'>
+                  <ul class='py-2 space-y-2'>
+                     <li>
+                        <a href='/Generator/Guid' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Guid Generator</a>
+                     </li>
+                  </ul>
+               </NavBarDropDown>
+            </li>
+            
+         </ul>
+      </div>
+   </aside>

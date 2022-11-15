@@ -2,14 +2,20 @@
 
 <PageTitle>DevTools</PageTitle>
 
-<div class='page'>
-    <div class='sidebar'>
-        <NavMenu />
-    </div>
-
-    <main>
-        <article class='content px-4'>
-            @Body
-        </article>
-    </main>
+<div class='flex'>
+   <NavMenu/>
+   <main class='bg-blue-200 text-base w-full'>
+      <div class='container '>
+         <section class='h-screen bg-white dark:bg-gray-700'>
+            <div class="py-8 px-4 max-w-screen-xl lg:py-16 lg:px-12">
+               @Body
+            </div>
+         </section>
+      </div>
+   </main>
 </div>
+    
+
+
+
+
