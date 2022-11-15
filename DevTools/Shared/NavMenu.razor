@@ -7,54 +7,72 @@
     </div>
 </div>
 
-<div  @onclick='ToggleNavMenu'>
+<div @onclick='ToggleNavMenu'>
     <nav class='flex-column'>
         <div class='nav-item px-3'>
             <NavLink class='nav-link' href='' Match='NavLinkMatch.All'>
                 <span class='oi oi-home' aria-hidden='true'></span> Home
             </NavLink>
         </div>
-        
+
         <CollapsableLinks>
             <TopLevelLink>
-                <a class='nav-link dropdown-toggle' @onclick='context'>Encoding</a>
+                <NavLink class='nav-link' href='#' @onclick='context'>
+                    Encoding
+                </NavLink>
             </TopLevelLink>
             <Content>
                 <div class='nav-item px-3'>
-                    <NavLink class='nav-link' href='Base64/Encode'>
-                        <span class='oi oi-plus' aria-hidden='true'></span> Base64 Encode
+                    <NavLink class='nav-link' href='Base64/Encode' >
+                        Base64 Encode
                     </NavLink>
                 </div>
 
                 <div class='nav-item px-3'>
                     <NavLink class='nav-link' href='Base64/Decode'>
-                        <span class='oi oi-plus' aria-hidden='true'></span> Base64 Decode
+                        Base64 Decode
                     </NavLink>
                 </div>
 
                 <div class='nav-item px-3'>
                     <NavLink class='nav-link' href='Url/Encode'>
-                        <span class='oi oi-plus' aria-hidden='true'></span> Url Encode
+                        Url Encode
                     </NavLink>
                 </div>
 
                 <div class='nav-item px-3'>
                     <NavLink class='nav-link' href='Url/Decode'>
-                        <span class='oi oi-plus' aria-hidden='true'></span> Url Decode
+                        Url Decode
                     </NavLink>
                 </div>
             </Content>
         </CollapsableLinks>
-        
-        
+
         <CollapsableLinks>
             <TopLevelLink>
-                 <a class='nav-link dropdown-toggle' @onclick='context'>Converters</a>
+                <NavLink class='nav-link' href='#' @onclick='context'>
+                    Converters
+                </NavLink>
             </TopLevelLink>
             <Content>
                 <div class='nav-item px-3'>
                     <NavLink class='nav-link' href='/Convert/Number-Base'>
-                        <span class='oi oi-plus' aria-hidden='true'></span> Number Base
+                        Number Base
+                    </NavLink>
+                </div>
+            </Content>
+        </CollapsableLinks>
+
+        <CollapsableLinks>
+            <TopLevelLink>
+                <NavLink class='nav-link' href='#' @onclick='context'>
+                    Generators
+                </NavLink>
+            </TopLevelLink>
+            <Content>
+                <div class='nav-item px-3'>
+                    <NavLink class='nav-link' href='/Generator/Guid'>
+                        Guid Generator
                     </NavLink>
                 </div>
             </Content>

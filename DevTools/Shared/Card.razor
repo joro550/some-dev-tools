@@ -14,7 +14,7 @@
 </div>
 
 @code {
-  [Parameter] public RenderFragment Title { get; set; }
-  [Parameter] public RenderFragment Text { get; set; }
-  [Parameter] public string HRef { get; set; }
+  [Parameter] public RenderFragment Title { get; set; } = null!;
+  [Parameter] public RenderFragment Text { get; set; }= null!;
+  [Parameter] public string HRef { get; set; } = string.Empty;
 }

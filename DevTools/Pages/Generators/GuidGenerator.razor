@@ -1,0 +1,35 @@
+﻿@page "/Generator/Guid"
+
+<h3>Guid Generator</h3>
+
+<div class='mb-3'>
+  <label class='form-label'>Number to generate</label>
+  <input type='number' max='1000' @bind='_amountToGenerate' @bind:event='oninput' class='form-control' placeholder='Number of UUIDs'>
+</div>
+
+<button class='btn btn-primary mt-3' @onclick='Generate'>Generate</button>
+
+<div class='form-floating mt-3 mb-4'>
+    <textarea readonly @bind='_output' class='form-control' placeholder='Output' id='outputTextArea' style='height: 200px'>
+    </textarea>
+    <label for='outputTextArea'>Output</label>
+</div>
+
+@code {
+    private string _output = string.Empty;
+    private int _amountToGenerate = 0;
+
+    private void Generate()
+    {
+        _amountToGenerate = _amountToGenerate > 1000 ? 1000 : _amountToGenerate;
+        
+        var generatedGuids = new List<string>();
+        
+        for (var i = 0; i < _amountToGenerate; i++)
+        {
+            generatedGuids.Add(Guid.NewGuid().ToString());
+        }
+
+        _output = string.Join(Environment.NewLine, generatedGuids);
+    }
+}

@@ -17,4 +17,10 @@
       <_ContentIncludedByDefault Remove="Pages\Base64\Decode.razor" />
       <_ContentIncludedByDefault Remove="Pages\Base64\Encode.razor" />
     </ItemGroup>
+
+    <ItemGroup>
+        <Watch Include="..\**\*.razor" />
+        <Watch Include="..\**\*.scss" />
+        <Watch Include="..\**\*.cs" />
+    </ItemGroup>
 </Project>
