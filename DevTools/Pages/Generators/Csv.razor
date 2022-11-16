@@ -2,9 +2,21 @@
 @using CsvHelper
 @using System.Globalization
 @using System.Dynamic
+@using System.Text
 @using Bogus.DataSets
 @inject IJSRuntime Js
-<h3>Csv</h3>
+
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Csv Generator
+</h1>
+
+<p class='mb-8 font-normal text-gray-500 dark:text-white'>
+    This page is being powered by an open source liraries: 
+</p>
+<ul class='mb-8 font-normal text-gray-500 dark:text-white'>
+    <li><a target='_blank' class='text-blue-200' href='https://github.com/bchavez/Bogus'>Bogus</a></li>
+    <li><a target='_blank' class='text-blue-200' href='https://github.com/JoshClose/CsvHelper'>CsvHelper</a></li>
+</ul>
 
 <button @onclick='Add' type='submit' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
     Add
@@ -38,9 +50,14 @@
                     </th>
                     <td class="py-4 px-6">
                         <div class='relative z-0 mb-6 w-full group'>
-                            <input @bind='column.Type' @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-                            <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>Input</label>
-                        </div>
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                                <select @bind='column.Type' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                  @foreach (var dataType in Enum.GetValues<DataType>())
+                                  {
+                                      <option value='@dataType'>@dataType</option>
+                                  }
+                                </select>
+                            </div>
                     </td>
                 </tr>
             }
@@ -53,9 +70,9 @@
     private readonly List<CsvGeneratorModel> _columns = new();
 
     private void Add() 
-        => _columns.Add(new CsvGeneratorModel(string.Empty, string.Empty));
+        => _columns.Add(new CsvGeneratorModel(string.Empty, DataType.Guid));
 
-    private Stream Generate()
+    private string Generate()
     {
         var lorem = new Lorem();
         var records = new List<dynamic>();
@@ -66,34 +83,53 @@
             record.TryAdd(column.Name, lorem.Word());
             records.Add(record);
         }
-        
-        var stringStream = new MemoryStream();
-        var csv = new CsvWriter(new StreamWriter(stringStream), CultureInfo.InvariantCulture);
+
+        using var writer = new StringWriter();
+        using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
 
         csv.WriteRecords(records);
-        
-        stringStream.Position = 0;
-        return stringStream;
+
+        return writer.ToString();
     }
 
     private async Task DownloadFileFromStream()
     {
-        await using var fileStream = Generate();
+        var fileContent = Generate();
         var fileName = $"{DateTime.UtcNow:s}.csv";
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(fileContent));
 
-        using var streamRef = new DotNetStreamReference(stream: fileStream);
+        using var streamRef = new DotNetStreamReference(stream: stream);
         await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+
+    public enum DataType
+    {
+        Guid,
+        LoremWord
     }
 
     public class CsvGeneratorModel
     {
-        public CsvGeneratorModel(string name, string type)
+        public CsvGeneratorModel(string name, DataType type)
         {
             Name = name;
             Type = type;
         }
         
         public string Name { get; set; }
-        public string Type { get; set; }
-    };
+        public DataType Type { get; set; }
+
+        public string GetData()
+        {
+            var lorem = new Lorem();
+            
+            return Type switch 
+            {
+                DataType.Guid => Guid.NewGuid().ToString(),
+                DataType.LoremWord => lorem.Word(),
+                _ => string.Empty
+            };
+        }
+    }
 }
