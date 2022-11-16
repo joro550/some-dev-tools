@@ -11,10 +11,6 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient(typeof(EncodingService<>));
 
-
-builder.Services.AddMemoryCache(options => 
-    options.ExpirationScanFrequency = TimeSpan.FromDays(7));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
