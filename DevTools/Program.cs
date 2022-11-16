@@ -1,12 +1,16 @@
 using DevTools.Data;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddTransient<Session>();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<EncodingService>();
+builder.Services.AddBlazoredLocalStorage();
+
 
 builder.Services.AddMemoryCache(options => 
     options.ExpirationScanFrequency = TimeSpan.FromDays(7));

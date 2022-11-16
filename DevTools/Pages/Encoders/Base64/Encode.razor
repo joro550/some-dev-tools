@@ -2,7 +2,7 @@
 
 @using System.Text
 @using DevTools.Data
-@inject EncodingService EncodingService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Base 64 Encode
@@ -82,16 +82,31 @@
     {
         if (string.IsNullOrEmpty(_input) || string.IsNullOrEmpty(_output))
             return;
-        
-        await EncodingService.Add(new Base64Encoding(_input, _output));
-        await ReloadTable();
+
+        var items = await LocalStorage.GetItemAsync<List<Base64Encoding>>(nameof(Base64Encoding));
+        if (items == null)
+        {
+            items = new List<Base64Encoding> { new(_input, _output) };
+        }
+        else
+        {
+            items.Add(new Base64Encoding(_input, _output));
+        }
+
+        await LocalStorage.SetItemAsync(nameof(Base64Encoding), items);
+        StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync() => await ReloadTable();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ReloadTable();
+    }
 
     private async Task ReloadTable()
     {
-        var encodings = await EncodingService.GetAsync();
-        _encodings = encodings.OfType<Base64Encoding>().ToList();
+        var items = await LocalStorage.GetItemAsync<List<Base64Encoding>>(nameof(Base64Encoding));
+        _encodings = items?.ToList() ?? new List<Base64Encoding>();
+        StateHasChanged();
     }
 }
