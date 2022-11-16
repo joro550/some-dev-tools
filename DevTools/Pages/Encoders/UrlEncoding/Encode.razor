@@ -1,7 +1,7 @@
 ﻿@page "/Url/Encode"
 @using System.Web
 @using DevTools.Data
-@inject EncodingService EncodingService
+@inject EncodingService<UrlEncode> EncodingService
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Url Encode
@@ -74,7 +74,7 @@
         if(string.IsNullOrWhiteSpace(value))
             return;
 
-        _output= HttpUtility.UrlEncode(value);
+        _output = HttpUtility.UrlEncode(value);
     }
     
     private async Task Save()
@@ -83,14 +83,18 @@
             return;
         
         await EncodingService.Add(new UrlEncode(_input, _output));
-        await ReloadTable();
+        StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync() => await ReloadTable();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ReloadTable();
+    }
 
     private async Task ReloadTable()
     {
         var encodings = await EncodingService.GetAsync();
-        _encodings = encodings.OfType<UrlEncode>().ToList();
+        _encodings = encodings.ToList();
     }
 }

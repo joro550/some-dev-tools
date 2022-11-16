@@ -6,10 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddTransient<Session>();
-builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<EncodingService>();
 builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddTransient(typeof(EncodingService<>));
 
 
 builder.Services.AddMemoryCache(options => 

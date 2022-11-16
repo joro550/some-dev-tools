@@ -1,7 +1,7 @@
 ﻿@page "/Base64/Decode"
 @using System.Text
 @using DevTools.Data
-@inject EncodingService EncodingService
+@inject EncodingService<Base64Decoding> EncodingService
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Base 64 Decode
@@ -79,12 +79,16 @@
     }
   }
   
-  protected override async Task OnInitializedAsync() => await ReloadTable();
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (firstRender)
+        await ReloadTable();
+}
 
   private async Task ReloadTable()
   {
     var encodings = await EncodingService.GetAsync();
-    _encodings = encodings.OfType<Base64Decoding>().ToList();
+    _encodings = encodings.ToList();
   }
   
   private async Task Save()

@@ -2,7 +2,7 @@
 
 @using System.Web
 @using DevTools.Data
-@inject EncodingService EncodingService
+@inject EncodingService<UrlDecode> EncodingService
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Url Decode
@@ -84,14 +84,18 @@
             return;
         
         await EncodingService.Add(new UrlDecode(_input, _output));
-        await ReloadTable();
+        StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync() => await ReloadTable();
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await ReloadTable();
+    }
 
     private async Task ReloadTable()
     {
         var encodings = await EncodingService.GetAsync();
-        _encodings = encodings.OfType<UrlDecode>().ToList();
+        _encodings = encodings.ToList();
     }
 }
