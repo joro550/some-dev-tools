@@ -11,6 +11,20 @@
     <link href='/css/output.css' rel='stylesheet'>
     <script src="https://kit.fontawesome.com/c803f919be.js" crossorigin="anonymous"></script>
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    
+    <script>
+      window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+        const arrayBuffer = await contentStreamReference.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
+        const url = URL.createObjectURL(blob);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = fileName ?? '';
+        anchorElement.click();
+        anchorElement.remove();
+        URL.revokeObjectURL(url);
+      }
+    </script>
 </head>
 <body>
     @RenderBody()
