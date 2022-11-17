@@ -73,9 +73,9 @@
             return;
 
         var byteSpan = new Span<byte>(new byte[256]);
-        if (Convert.TryFromBase64String(value, byteSpan, out _))
+        if (Convert.TryFromBase64String(value, byteSpan, out var bytesWritten))
         {
-            _output = Encoding.UTF8.GetString(byteSpan);
+            _output = Encoding.UTF8.GetString(byteSpan[..bytesWritten]);
         }
     }
     
@@ -85,7 +85,7 @@
             return;
 
         await EncodingService.Add(new Base64Decoding(_input, _output));
-        StateHasChanged();
+        await ReloadTable();
     }
 
     protected override async Task OnInitializedAsync() => await ReloadTable();

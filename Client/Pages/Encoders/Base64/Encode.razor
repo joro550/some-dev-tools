@@ -84,7 +84,7 @@
             return;
 
         await LocalStorage.Add(new Base64Encoding(_input, _output));
-        StateHasChanged();
+        await ReloadTable();
     }
 
     protected override async Task OnInitializedAsync() => await ReloadTable();

@@ -4,6 +4,8 @@
 @using System.Dynamic
 @using System.Text
 @using Bogus.DataSets
+@using DevTools.Shared
+@using Microsoft.AspNetCore.Components
 @inject IJSRuntime Js
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
@@ -74,13 +76,12 @@
 
     private string Generate()
     {
-        var lorem = new Lorem();
         var records = new List<dynamic>();
 
         foreach (var column in _columns)
         {
             var record = new ExpandoObject();
-            record.TryAdd(column.Name, lorem.Word());
+            record.TryAdd(column.Name, column.GetData());
             records.Add(record);
         }
 
@@ -100,36 +101,5 @@
 
         using var streamRef = new DotNetStreamReference(stream: stream);
         await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-    }
-
-
-    public enum DataType
-    {
-        Guid,
-        LoremWord
-    }
-
-    public class CsvGeneratorModel
-    {
-        public CsvGeneratorModel(string name, DataType type)
-        {
-            Name = name;
-            Type = type;
-        }
-        
-        public string Name { get; set; }
-        public DataType Type { get; set; }
-
-        public string GetData()
-        {
-            var lorem = new Lorem();
-            
-            return Type switch 
-            {
-                DataType.Guid => Guid.NewGuid().ToString(),
-                DataType.LoremWord => lorem.Word(),
-                _ => string.Empty
-            };
-        }
     }
 }
