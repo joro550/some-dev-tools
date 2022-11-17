@@ -1,14 +1,9 @@
-﻿@page "/Cryptography/Md5"
+﻿@page "/Cryptography/Sha1"
 @inject HttpClient Http;
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
-    Md5
+    Sha1
 </h1>
-
-<p class='mb-8 font-normal text-gray-500 dark:text-white'>
-    Md5 hashing function is generally considered defeated - be careful with your use-case 
-    <span class='text-bold'>Do not use is to store passwords</span>
-</p>
 
 <div class='mt-2 mb-3'>
     <div class='relative z-0 mb-6 w-full group'>
@@ -37,7 +32,7 @@
 
     private async Task<string> CreateHash(string input)
     {
-        var result = await Http.GetAsync($"api/cryptography/md5?input={input}");
+        var result = await Http.GetAsync($"api/cryptography/sha1?input={input}");
         if (!result.IsSuccessStatusCode)
             return string.Empty;
 
