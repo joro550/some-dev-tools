@@ -1,0 +1,70 @@
+﻿@page "/Convert/Number-Base"
+
+<h3>Number Base</h3>
+
+<div class='mb-3'>
+  <label class='form-label'>Input</label>
+  <input class='form-control' @bind='Input' @bind:event='oninput' placeholder='Input number'>
+</div>
+<div class='mb-3'>
+    <label class='form-label'>Example textarea</label>
+      <select class='form-select' @bind='Base'>
+        <option value='2'>Binary</option>
+        <option value='10'>Base 10</option>
+        <option value='16'>Hexadecimal</option>
+      </select>
+</div>
+
+<div class='form-floating'>
+  <textarea readonly @bind='_output' class='form-control readonly' placeholder='Output' id='outputTextArea' style='height: 100px'>
+  </textarea>
+  <label for='outputTextArea'>Output</label>
+</div>
+
+@code {
+    private int _base = 10;
+    private string _input = string.Empty;
+    private string _output = string.Empty;
+    
+    private string Input
+    {
+        get => _input;
+        set 
+        { 
+            _input = value;
+            EncodeInput(Input, Base);
+        }
+    }
+    
+    private int Base
+    {
+        get => _base;
+        set 
+        { 
+            _base = value;
+            EncodeInput(Input, Base);
+        }
+    }
+
+    private void EncodeInput(string value, int baseNumber)
+    {
+        var split = value.Split(" ");
+        var values = split.Select(x => 
+            int.TryParse(x, out var result) ? Int32ToString(result, baseNumber) : "0");
+        _output = string.Join(" ", values);
+    }
+
+    private static string Int32ToString(int value, int toBase)
+    {
+        var result = string.Empty;
+        do
+        {
+            result = "0123456789ABCDEF"[value % toBase] + result;
+            value /= toBase;
+        }
+        while (value > 0);
+
+        return result;
+    }
+}
+

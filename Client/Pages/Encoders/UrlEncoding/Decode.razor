@@ -1,0 +1,92 @@
+﻿@page "/Url/Decode"
+
+@using System.Web
+@using DevTools.Client.Data
+@inject EncodingService<UrlDecode> EncodingService
+
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Url Decode
+</h1>
+
+<form class='mb-3'>
+  <div class='relative z-0 mb-6 w-full group'>
+      <input @bind='Input' @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>Input</label>
+  </div>
+  <div class='relative z-0 mb-6 w-full group'>
+      <textarea readonly @bind='_output' type="text" style='height: 100px' class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " >
+      </textarea>
+      <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>Output</label>
+  </div>
+  
+  <button @onclick='Save' type='submit' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Save</button>
+</form>
+
+@if (_encodings.Any())
+{
+    <div class="mt-3 overflow-x-auto relative  rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">
+                        Input
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        Output
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var encoding in _encodings)
+                {
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @encoding.Input
+                        </th>
+                        <td class="py-4 px-6">
+                            @encoding.Output
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    
+    private string _input = string.Empty;
+    private string _output = string.Empty;
+    
+    private List<UrlDecode> _encodings = new();
+    
+    private string Input
+    {
+        get => _input;
+        set 
+        { 
+            _input = value;
+            EncodeInput(value);
+        }
+    }
+    
+    private void EncodeInput(string value)
+    {
+        if(string.IsNullOrWhiteSpace(value))
+            return;
+
+        _output = HttpUtility.UrlDecode(value);
+    }
+    
+    private async Task Save()
+    {
+        if (string.IsNullOrEmpty(_input) || string.IsNullOrEmpty(_output))
+            return;
+        
+        await EncodingService.Add(new UrlDecode(_input, _output));
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync() => await ReloadTable();
+    private async Task ReloadTable() => _encodings = await EncodingService.GetAsync();
+}
