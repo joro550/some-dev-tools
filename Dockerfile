@@ -13,7 +13,7 @@ RUN npm install -D tailwindcss
 
 # Build and publish a release
 RUN dotnet publish -c Release -o out
-RUN npx tailwindcss -i ./out/wwwroot/css/input.css -o ./out/wwwroot/css/output.css --minify
+RUN npx tailwindcss -c ./Client/tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/wwwroot/css/output.css --minify
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
