@@ -69,10 +69,10 @@
 
 
 @code {
-    private readonly List<CsvGeneratorModel> _columns = new();
+    private readonly List<GeneratorModel> _columns = new();
 
     private void Add() 
-        => _columns.Add(new CsvGeneratorModel(string.Empty, DataType.Guid));
+        => _columns.Add(new GeneratorModel(string.Empty, DataType.Guid));
 
     private string Generate()
     {
