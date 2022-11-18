@@ -1,6 +1,11 @@
+using DevTools.Server.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache();
+
+builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
