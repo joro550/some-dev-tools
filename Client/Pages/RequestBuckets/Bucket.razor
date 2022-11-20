@@ -5,18 +5,15 @@
 @inject HttpClient Http;
 @inject NavigationManager Navigation;
 
-
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Request Bucket
 </h1>
 
 @if (string.IsNullOrEmpty(Id))
 {
-    <form class='mb-3'>
-        <button @onclick='Create' type='submit' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
-            Create
-        </button>
-    </form>
+    <button @onclick='Create' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+        Create
+    </button>
 }
 
 @if (!string.IsNullOrEmpty(Id))
@@ -28,11 +25,9 @@
         </label>
     </div>
     
-    <form class='mb-3'>
-        <button @onclick='Refresh' type='submit' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
-            Refresh
-        </button>
-    </form>
+    <button @onclick='Refresh' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+        Refresh
+    </button>
 
     @if (_requests.Any())
     {
@@ -76,15 +71,24 @@
 
     private async Task Create()
     {
-        var response = await Http.PostAsJsonAsync("api/bucket", new CreateBucketRequest());
-        var responseMessage = await response.Content.ReadFromJsonAsync<CreateBucketResponse>();
-        Navigation.NavigateTo($"/RequestBucket/Create/{responseMessage!.Id}");
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/bucket", 
+                new CreateBucketRequest {Prefix = "bucket"});
+            
+            var responseMessage = await response.Content.ReadFromJsonAsync<CreateBucketResponse>();
+            Navigation.NavigateTo($"/RequestBucket/Create/{responseMessage!.Id}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 
-    protected override Task OnInitializedAsync()
+    protected override Task OnParametersSetAsync()
     {
         _url = new Uri(Config.BaseAddress, $"/api/bucket/{Id}").AbsolutePath;
-        return Task.CompletedTask;
+        return base.OnParametersSetAsync();
     }
 
     private async Task Refresh()

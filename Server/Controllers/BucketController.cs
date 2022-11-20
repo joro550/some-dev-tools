@@ -13,12 +13,18 @@ public class BucketController : ControllerBase
         => _repo = repo;
 
     [HttpPost]
-    public IActionResult CreateAsync([FromBody] CreateBucketRequest request)
+    public IActionResult CreateAsync(CreateBucketRequest request)
     {
         var id = $"{request.Prefix}-{Guid.NewGuid():N}";
         _repo.Create(id);
 
         return Ok(new CreateBucketResponse(id));
+    }
+    
+    [HttpGet]
+    public IActionResult GetAsync()
+    {
+        return Ok(new CreateBucketResponse(Guid.NewGuid().ToString()));
     }
     
     [HttpGet("{id}/requests")]
@@ -28,60 +34,60 @@ public class BucketController : ControllerBase
         return Ok(requests);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> AcceptGetRequest([FromRoute]string id)
-    {
-        using var streamReader = new StreamReader(Request.Body);
-        var request = new CustomHttpRequest
-        {
-            Method = Request.Method,
-            Body = await streamReader.ReadToEndAsync()
-        };
-        
-        
-        await _repo.AddAsync(id, request);
-        return Ok();
-    }
-
-    [HttpPost("{id}")]
-    public async Task<IActionResult> AcceptPostRequest([FromRoute] string id)
-    {
-        using var streamReader = new StreamReader(Request.Body);
-        var request = new CustomHttpRequest
-        {
-            Method = Request.Method,
-            Body = await streamReader.ReadToEndAsync()
-        };
-        
-        await _repo.AddAsync(id, request);
-        return Ok();
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> AcceptPutRequest([FromRoute] string id)
-    {
-        using var streamReader = new StreamReader(Request.Body);
-        var request = new CustomHttpRequest
-        {
-            Method = Request.Method,
-            Body = await streamReader.ReadToEndAsync()
-        };
-        
-        await _repo.AddAsync(id, request);
-        return Ok();
-    }
-    
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> AcceptDeleteRequest([FromRoute] string id)
-    {
-        using var streamReader = new StreamReader(Request.Body);
-        var request = new CustomHttpRequest
-        {
-            Method = Request.Method,
-            Body = await streamReader.ReadToEndAsync()
-        };
-        
-        await _repo.AddAsync(id, request);
-        return Ok();
-    }
+    // [HttpGet("{id}")]
+    // public async Task<IActionResult> AcceptGetRequest([FromRoute]string id)
+    // {
+    //     using var streamReader = new StreamReader(Request.Body);
+    //     var request = new CustomHttpRequest
+    //     {
+    //         Method = Request.Method,
+    //         Body = await streamReader.ReadToEndAsync()
+    //     };
+    //     
+    //     
+    //     await _repo.AddAsync(id, request);
+    //     return Ok();
+    // }
+    //
+    // [HttpPost("{id}")]
+    // public async Task<IActionResult> AcceptPostRequest([FromRoute] string id)
+    // {
+    //     using var streamReader = new StreamReader(Request.Body);
+    //     var request = new CustomHttpRequest
+    //     {
+    //         Method = Request.Method,
+    //         Body = await streamReader.ReadToEndAsync()
+    //     };
+    //     
+    //     await _repo.AddAsync(id, request);
+    //     return Ok();
+    // }
+    //
+    // [HttpPut("{id}")]
+    // public async Task<IActionResult> AcceptPutRequest([FromRoute] string id)
+    // {
+    //     using var streamReader = new StreamReader(Request.Body);
+    //     var request = new CustomHttpRequest
+    //     {
+    //         Method = Request.Method,
+    //         Body = await streamReader.ReadToEndAsync()
+    //     };
+    //     
+    //     await _repo.AddAsync(id, request);
+    //     return Ok();
+    // }
+    //
+    // [HttpDelete("{id}")]
+    // public async Task<IActionResult> AcceptDeleteRequest([FromRoute] string id)
+    // {
+    //     using var streamReader = new StreamReader(Request.Body);
+    //     var request = new CustomHttpRequest
+    //     {
+    //         Method = Request.Method,
+    //         Body = await streamReader.ReadToEndAsync()
+    //     };
+    //     
+    //     await _repo.AddAsync(id, request);
+    //     return Ok();
+    // }
 }
