@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>DevTools</title>
-    <base href="/" />
+    <base href="/"/>
     <link href='/css/output.css' rel='stylesheet'>
-    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="icon" type="image/png" href="favicon.png"/>
 
     <script src="https://kit.fontawesome.com/c803f919be.js" crossorigin="anonymous"></script>
     <script>
@@ -22,13 +22,24 @@
             anchorElement.remove();
             URL.revokeObjectURL(url);
         }
+
+        window.clipboardCopy = {
+            copyText: function (text) {
+                navigator.clipboard.writeText(text).then(function () {
+                    alert("Copied to clipboard!");
+                })
+                .catch(function (error) {
+                    alert(error);
+                });
+            }
+        };
     </script>
 </head>
 
 <body>
-    <div id="app">
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
+<div id="app">
+</div>
+<script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>

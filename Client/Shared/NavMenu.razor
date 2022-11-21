@@ -1,4 +1,4 @@
-﻿<aside class='w-64 h-screen bg-gray-50 dark:bg-gray-800'>
+﻿<aside class='w-64 min-h-screen bg-gray-50 dark:bg-gray-800'>
     <div class='py-4 px-3'>
         <a href='/' class='flex items-center pl-2.5 mb-5'>
             <span class='self-center text-xl font-bold whitespace-nowrap dark:text-white'>DevTools</span>
@@ -6,27 +6,17 @@
 
         <ul class='space-y-2'>
             <li>
-                <a href='#' class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <a href='#' class='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                     <i class='fa-solid fa-house'></i>
-                    <span class="ml-3">Home</span>
+                    <span class='ml-3'>Home</span>
                 </a>
             </li>
 
             <NavBarDropDown LinkText='Encoding' IconClass='fa-solid fa-suitcase'>
-                <ul class='py-2 space-y-2'>
-                    <li>
-                        <a href='/Base64/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Encode</a>
-                    </li>
-                    <li>
-                        <a href='/Base64/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Decode</a>
-                    </li>
-                    <li>
-                        <a href='/Url/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Encode</a>
-                    </li>
-                    <li>
-                        <a href='/Url/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Decode</a>
-                    </li>
-                </ul>
+                <NavBarDropDownItem LinkAddress='/Base64/Encode' LinkText='Base64 Encode' />
+                <NavBarDropDownItem LinkAddress='/Base64/Decode' LinkText='Base64 Decode' />
+                <NavBarDropDownItem LinkAddress='/Url/Encode' LinkText='Url Encode' />
+                <NavBarDropDownItem LinkAddress='/Url/Decode' LinkText='Url Decode' />
             </NavBarDropDown>
 
             @* <li> *@
@@ -38,54 +28,20 @@
             @* </li> *@
 
             <NavBarDropDown LinkText='Generators' IconClass='fa-solid fa-wand-magic-sparkles'>
-                <ul class='py-2 space-y-2'>
-                    <li>
-                        <a href='/Generator/Guid' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Guid Generator</a>
-                    </li>
-                    <li>
-                        <a href='/Generator/LoremIpsum' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Lorem Ipsum</a>
-                    </li>
-                    <li>
-                        <a href='/Generator/Csv' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Csv
-                        </a>
-                    </li>
-                </ul>
+                <NavBarDropDownItem LinkAddress='/Generator/Guid' LinkText='Guid Generator' />
+                <NavBarDropDownItem LinkAddress='/Generator/LoremIpsum' LinkText='Lorem Ipsum' />
+                <NavBarDropDownItem LinkAddress='/Generator/Csv' LinkText='Csv' />
             </NavBarDropDown>
 
             <NavBarDropDown LinkText='Cryptography' IconClass='fa-solid fa-lock'>
-                <ul class='py-2 space-y-2'>
-                    <li>
-                        <a href='/Cryptography/Md5' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Md5
-                        </a>
-                    </li>
-                    <li>
-                        <a href='/Cryptography/Sha1' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Sha1
-                        </a>
-                    </li>
-                    <li>
-                        <a href='/Cryptography/Sha256' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Sha256
-                        </a>
-                    </li>
-                    <li>
-                        <a href='/Cryptography/Sha512' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Sha512
-                        </a>
-                    </li>
-                </ul>
+                <NavBarDropDownItem LinkAddress='/Cryptography/Md5' LinkText='Md5' />
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha1' LinkText='Sha1' />
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha256' LinkText='Sha256' />
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha512' LinkText='Sha512' />
             </NavBarDropDown>
 
             <NavBarDropDown LinkText='Buckets' IconClass='fa-solid fa-bucket'>
-                <ul class='py-2 space-y-2'>
-                    <li>
-                        <a href='/RequestBucket/Create' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                            Requests
-                        </a>
-                    </li>
-                </ul>
+                <NavBarDropDownItem LinkAddress='/RequestBucket/Create' LinkText='Requests' />
             </NavBarDropDown>
         </ul>
     </div>
