@@ -1,13 +1,16 @@
 ﻿@page "/RequestBucket/Create/{id?}"
 @using DevTools.Shared
 
-@inject Config Config;
 @inject HttpClient Http;
 @inject NavigationManager Navigation;
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
     Request Bucket
 </h1>
+
+<p class='mb-14 font-normal text-gray-500 dark:text-white'>
+    These request buckets are saved in memory (at the moment) so they may dissapear randomly 
+</p>
 
 @if (string.IsNullOrEmpty(Id))
 {
@@ -64,13 +67,30 @@
                             </td>
                         </tr>
                     
-                    
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 Headers
                             </th>
                             <td class="py-4 px-6">
                                 <RequestHeaders Headers='request.Headers' />
+                            </td>
+                        </tr>
+                    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Cookies
+                            </th>
+                            <td class="py-4 px-6">
+                                <RequestCookies Headers='request.Cookies' />
+                            </td>
+                        </tr>
+                    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Query
+                            </th>
+                            <td class="py-4 px-6">
+                                <RequestQuery Headers='request.Query' />
                             </td>
                         </tr>
                     </tbody>
@@ -106,7 +126,7 @@
 
     protected override Task OnParametersSetAsync()
     {
-        _url = new Uri(Config.BaseAddress, $"/api/{Id}/request").AbsolutePath;
+        _url = $"{Http.BaseAddress}api/{Id}/request";
         return base.OnParametersSetAsync();
     }
 

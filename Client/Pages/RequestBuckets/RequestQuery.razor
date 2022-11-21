@@ -1,4 +1,4 @@
-﻿@if (Headers.Any())
+﻿@if (Query.Any())
 {
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
@@ -12,22 +12,22 @@
         </tr>
         </thead>
         <tbody>
-            @foreach (var header in Headers)
+            @foreach (var query in Query)
             {
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        @header.Key
+                        @query.Key
                     </th>
                     <td class="py-4 px-6">
-                        @switch (header.Value.Count)
+                        @switch (query.Value.Count)
                         {
                             case 1:
-                                @header.Value[0]
+                                @query.Value[0]
                                 break;
                             case > 1:
                             {
                                 <ul>
-                                    @foreach (var value in header.Value)
+                                    @foreach (var value in query.Value)
                                     {
                                         <li>@value</li>
                                     }
@@ -47,6 +47,6 @@
 
 @code{
     [Parameter]
-    public Dictionary<string, List<string?>> Headers { get; set; }
+    public Dictionary<string, List<string?>> Query { get; set; }
 
 }
