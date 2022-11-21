@@ -1,36 +1,34 @@
-﻿<aside class='w-64 h-screen bg-gray-50 dark:bg-gray-800' >
-      <div class='py-4 px-3' >
-         <a href='/' class='flex items-center pl-2.5 mb-5'>
+﻿<aside class='w-64 h-screen bg-gray-50 dark:bg-gray-800'>
+    <div class='py-4 px-3'>
+        <a href='/' class='flex items-center pl-2.5 mb-5'>
             <span class='self-center text-xl font-bold whitespace-nowrap dark:text-white'>DevTools</span>
-         </a>
+        </a>
 
-         <ul class='space-y-2'>
+        <ul class='space-y-2'>
             <li>
-               <a href='#' class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                  <i class='fa-solid fa-house'></i>
-                  <span class="ml-3">Home</span>
-               </a>
+                <a href='#' class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class='fa-solid fa-house'></i>
+                    <span class="ml-3">Home</span>
+                </a>
             </li>
-            
-            <li>
-               <NavBarDropDown LinkText='Encoding' IconClass='fa-solid fa-suitcase'>
-                  <ul class='py-2 space-y-2'>
-                     <li>
+
+            <NavBarDropDown LinkText='Encoding' IconClass='fa-solid fa-suitcase'>
+                <ul class='py-2 space-y-2'>
+                    <li>
                         <a href='/Base64/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Encode</a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Base64/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Base64 Decode</a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Url/Encode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Encode</a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Url/Decode' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Url Decode</a>
-                     </li>
-                  </ul>
-               </NavBarDropDown>
-            </li>
-            
+                    </li>
+                </ul>
+            </NavBarDropDown>
+
             @* <li> *@
             @*    <a href="#" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"> *@
             @*       <svg aria-hidden="true" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg> *@
@@ -38,52 +36,57 @@
             @*       <span class="inline-flex justify-center items-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span> *@
             @*    </a>  *@
             @* </li> *@
-            
-            <li>
-               <NavBarDropDown LinkText='Generators' IconClass='fa-solid fa-wand-magic-sparkles'>
-                  <ul class='py-2 space-y-2'>
-                     <li>
+
+            <NavBarDropDown LinkText='Generators' IconClass='fa-solid fa-wand-magic-sparkles'>
+                <ul class='py-2 space-y-2'>
+                    <li>
                         <a href='/Generator/Guid' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Guid Generator</a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Generator/LoremIpsum' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>Lorem Ipsum</a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Generator/Csv' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                           Csv
+                            Csv
                         </a>
-                     </li>
-                  </ul>
-               </NavBarDropDown>
-            </li>
-            
-            <li>
-               <NavBarDropDown LinkText='Cryptography' IconClass='fa-solid fa-lock'>
-                  <ul class='py-2 space-y-2'>
-                     <li>
+                    </li>
+                </ul>
+            </NavBarDropDown>
+
+            <NavBarDropDown LinkText='Cryptography' IconClass='fa-solid fa-lock'>
+                <ul class='py-2 space-y-2'>
+                    <li>
                         <a href='/Cryptography/Md5' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                           Md5
+                            Md5
                         </a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Cryptography/Sha1' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                           Sha1
+                            Sha1
                         </a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Cryptography/Sha256' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                           Sha256
+                            Sha256
                         </a>
-                     </li>
-                     <li>
+                    </li>
+                    <li>
                         <a href='/Cryptography/Sha512' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
-                           Sha512
+                            Sha512
                         </a>
-                     </li>
-                  </ul>
-               </NavBarDropDown>
-            </li>
-            
-         </ul>
-      </div>
-   </aside>
+                    </li>
+                </ul>
+            </NavBarDropDown>
+
+            <NavBarDropDown LinkText='Buckets' IconClass='fa-solid fa-bucket'>
+                <ul class='py-2 space-y-2'>
+                    <li>
+                        <a href='/RequestBucket/Create' class='flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'>
+                            Requests
+                        </a>
+                    </li>
+                </ul>
+            </NavBarDropDown>
+        </ul>
+    </div>
+</aside>

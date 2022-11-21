@@ -5,6 +5,7 @@
 <PageTitle>Weather forecast</PageTitle>
 
 <h1>Weather forecast</h1>
+<button @onclick='Reload'>Reload</button>
 
 <p>This component demonstrates fetching data from the server.</p>
 
@@ -43,5 +44,12 @@ else
     protected override async Task OnInitializedAsync()
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    }
+
+    private async Task Reload()
+    {
+        Console.WriteLine("Hello");
+        var response = await Http.PostAsJsonAsync("WeatherForecast", new WeatherForecast());
+        forecasts = await response.Content.ReadFromJsonAsync<WeatherForecast[]>();
     }
 }
