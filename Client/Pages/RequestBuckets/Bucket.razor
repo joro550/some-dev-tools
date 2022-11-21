@@ -2,6 +2,7 @@
 @using DevTools.Shared
 
 @inject HttpClient Http;
+@inject IClipboard Clipboard;
 @inject NavigationManager Navigation;
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
@@ -27,75 +28,20 @@
             Address to send requests
         </label>
     </div>
-
-    <button @onclick='Refresh' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
-        Refresh
-    </button>
-
+    <div class="flex">
+        <button @onclick='Refresh' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+            Refresh
+        </button>
+        
+        <button @onclick='async () => await Clipboard.CopyText(_url)' class='ml-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+            Copy address
+        </button>
+    </div>
     @if (_requests.Any())
     {
         @foreach (var request in _requests)
         {
-            <div class="mt-3 overflow-x-auto relative  rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="py-3 px-6">
-                                Title
-                            </th>
-                            <th scope="col" class="py-3 px-6">
-                                Value
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Method
-                            </th>
-                            <td class="py-4 px-6">
-                                @request.Method
-                            </td>
-                        </tr>
-                        
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Body
-                            </th>
-                            <td class="py-4 px-6">
-                                @request.Body
-                            </td>
-                        </tr>
-                    
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Headers
-                            </th>
-                            <td class="py-4 px-6">
-                                <RequestHeaders Headers='request.Headers' />
-                            </td>
-                        </tr>
-                    
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Cookies
-                            </th>
-                            <td class="py-4 px-6">
-                                <RequestCookies Headers='request.Cookies' />
-                            </td>
-                        </tr>
-                    
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Query
-                            </th>
-                            <td class="py-4 px-6">
-                                <RequestQuery Headers='request.Query' />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <RequestComponent Request='request' />
         }
     }
 }
@@ -138,5 +84,4 @@
             _requests = response;
         }
     }
-
 }

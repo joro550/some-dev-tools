@@ -28,7 +28,9 @@
 }
 
 @code{
+
     [Parameter]
-    public IEnumerable<KeyValuePair<string, string>> Cookies { get; set; }
+    public IEnumerable<KeyValuePair<string, string>> Cookies { get; set; } 
+        = new List<KeyValuePair<string, string>>();
 
 }
