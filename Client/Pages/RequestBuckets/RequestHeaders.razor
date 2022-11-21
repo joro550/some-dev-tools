@@ -1,0 +1,55 @@
+﻿@if (Headers.Any())
+{
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="py-3 px-6">
+                Name
+            </th>
+            <th scope="col" class="py-3 px-6">
+                Values
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var header in Headers)
+            {
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        @header.Key
+                    </th>
+                    <td class="py-4 px-6">
+                        @switch (header.Value.Count)
+                        {
+                            case 1:
+                                @header.Value[0]
+                                break;
+                            case > 1:
+                            {
+                                <ul>
+                                    @foreach (var value in header.Value)
+                                    {
+                                        <li>@value</li>
+                                    }
+                                </ul>
+                                break;
+                            }
+                            default:
+                                @:No Value
+                                break;
+
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code{
+    [Parameter]
+    public Dictionary<string, List<string?>> Headers { get; set; }
+
+}

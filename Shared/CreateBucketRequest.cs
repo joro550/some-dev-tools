@@ -30,4 +30,5 @@ public class CustomHttpRequest
     public Dictionary<string, List<string?>> Query { get; set; } 
     public Dictionary<string, List<string?>> FormCollection { get; set; } 
     public IDictionary<string, object?> RouteValues { get; set; }
+    public Dictionary<string,List<string?>> Headers { get; set; }
 }

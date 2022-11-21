@@ -17,6 +17,7 @@ public static class CustomHttpRequestExtensions
             Body = readToEndAsync.Length >= EightMb ? "Body was too long to save" : readToEndAsync,
             Cookies = request.Cookies.ToDictionary(query => query.Key, query => query.Value),
             Query = request.Query.ToDictionary(query => query.Key, query => query.Value.ToList()),
+            Headers = request.Headers.ToDictionary(x => x.Key, pair => pair.Value.ToList())
             // FormCollection = request.Form.ToDictionary(query => query.Key, query => query.Value.ToList()),
             // RouteValues = request.RouteValues.ToDictionary(x => x.Key, pair => pair.Value)
         };
