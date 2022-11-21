@@ -1,0 +1,85 @@
+﻿@page "/Validators/Regex"
+@using System.Text.RegularExpressions
+
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Regex Validation
+</h1>
+
+<div class='relative z-0 mb-6 w-full group'>
+  <input @bind='RegexString' @bind:event='oninput' type='text' class='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer' placeholder=" " />
+  <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+    Regex
+  </label>
+</div>
+<div class='relative z-0 mb-6 w-full group'>
+  <textarea @bind='TextToValidate' @bind:event='oninput' type='text' style='height: 200px' class='block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer' placeholder=" " >
+  </textarea>
+  <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+    Output
+  </label>
+</div>
+
+@if (_matches.Any())
+{
+    <div class="mt-3 overflow-x-auto relative  rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-3 px-6">
+                        Value
+                    </th>
+                    <th scope="col" class="py-3 px-6">
+                        Output
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in _matches)
+                {
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @match.Value
+                        </th>
+                        <td class="py-4 px-6">
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@code {
+    private string _regexString = string.Empty;
+    private string _textToValidate = string.Empty;
+    private IList<Match> _matches = new List<Match>();
+
+    private string TextToValidate
+    {
+        get => _textToValidate;
+        set
+        {
+            _textToValidate = value;
+            Validate();
+        }
+    }
+    
+    private string RegexString
+    {
+        get => _regexString;
+        set
+        {
+            _regexString = value;
+            Validate();
+        }
+    }
+    
+    private void Validate()
+    {
+        if (string.IsNullOrEmpty(_regexString) || string.IsNullOrEmpty(_textToValidate))
+            return;
+        _matches = System.Text.RegularExpressions.Regex.Matches(_textToValidate, _regexString);
+    }
+}

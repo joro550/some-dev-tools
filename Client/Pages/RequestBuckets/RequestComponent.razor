@@ -1,0 +1,88 @@
+﻿@using DevTools.Shared
+<div class="mt-3 overflow-x-auto relative rounded-lg">
+    <button @onclick='HideShow' class='mb-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+        Hide/Show
+    </button>
+                
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 @HiddenClass">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="py-3 px-6">
+                Title
+            </th>
+            <th scope="col" class="py-3 px-6">
+                Value
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                Method
+            </th>
+            <td class="py-4 px-6">
+                @Request.Method
+            </td>
+        </tr>
+        
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                Content Type
+            </th>
+            <td class="py-4 px-6">
+                @Request.ContentType
+            </td>
+        </tr>
+
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                Body
+            </th>
+            <td class="py-4 px-6">
+                <code>
+                    @Request.Body
+                </code>
+            </td>
+        </tr>
+
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                Headers
+            </th>
+            <td class="py-4 px-6">
+                <RequestHeaders Headers='Request.Headers'/>
+            </td>
+        </tr>
+
+        <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+            <th scope='row' class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                Cookies
+            </th>
+            <td class='py-4 px-6'>
+                <RequestCookies Cookies='Request.Cookies'/>
+            </td>
+        </tr>
+
+        <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
+            <th scope='row' class='py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                Query
+            </th>
+            
+            <td class='py-4 px-6'>
+                <RequestQuery Query='Request.Query'/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+@code{
+
+    [Parameter]
+    public CustomHttpRequest Request { get; set; } = new();
+
+    private bool _isHidden;
+    private string HiddenClass => _isHidden ? "hidden" : "";
+    private void HideShow() => _isHidden = !_isHidden;
+}
