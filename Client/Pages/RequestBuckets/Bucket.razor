@@ -19,53 +19,62 @@
 @if (!string.IsNullOrEmpty(Id))
 {
     <div class='relative z-0 mb-6 w-full group'>
-        <input @bind='_url' readonly @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        <input @bind='_url' readonly @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "/>
         <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
             Address to send requests
         </label>
     </div>
-    
+
     <button @onclick='Refresh' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
         Refresh
     </button>
 
     @if (_requests.Any())
     {
-        <div class="mt-3 overflow-x-auto relative  rounded-lg">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="py-3 px-6">
-                            Method
-                        </th>
-                        <th scope="col" class="py-3 px-6">
-                            Body
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var request in _requests)
-                    {
+        @foreach (var request in _requests)
+        {
+            <div class="mt-3 overflow-x-auto relative  rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="py-3 px-6">
+                                Title
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Value
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Method
+                            </th>
+                            <td class="py-4 px-6">
+                                @request.Method
+                            </td>
+                        </tr>
                         
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                @request.Method
+                                Body
                             </th>
                             <td class="py-4 px-6">
                                 @request.Body
                             </td>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+        }
     }
 }
 
 @code {
+
     [Parameter]
     public string? Id { get; set; }
-    
+
     private string _url = string.Empty;
     private List<CustomHttpRequest> _requests = new();
 
@@ -73,9 +82,9 @@
     {
         try
         {
-            var response = await Http.PostAsJsonAsync("api/bucket", 
-                new CreateBucketRequest {Prefix = "bucket"});
-            
+            var response = await Http.PostAsJsonAsync("api/bucket",
+                new CreateBucketRequest { Prefix = "bucket" });
+
             var responseMessage = await response.Content.ReadFromJsonAsync<CreateBucketResponse>();
             Navigation.NavigateTo($"/RequestBucket/Create/{responseMessage!.Id}");
         }
@@ -87,13 +96,17 @@
 
     protected override Task OnParametersSetAsync()
     {
-        _url = new Uri(Config.BaseAddress, $"/api/bucket/{Id}").AbsolutePath;
+        _url = new Uri(Config.BaseAddress, $"/api/{Id}/request").AbsolutePath;
         return base.OnParametersSetAsync();
     }
 
     private async Task Refresh()
     {
-        var response = await Http.PostAsJsonAsync("api/bucket", new CreateBucketRequest());
-        _requests = await response.Content.ReadFromJsonAsync<List<CustomHttpRequest>>() ?? new List<CustomHttpRequest>();
+        var response = await Http.GetFromJsonAsync<List<CustomHttpRequest>>($"api/bucket/{Id}");
+        if (response != null)
+        {
+            _requests = response;
+        }
     }
+
 }
