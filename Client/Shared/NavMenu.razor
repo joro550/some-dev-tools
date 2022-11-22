@@ -1,10 +1,15 @@
-﻿<aside class='w-64 min-h-screen bg-gray-50 dark:bg-gray-800'>
+﻿<aside class='md:w-64 md:min-h-screen bg-gray-50 dark:bg-gray-800'>
     <div class='py-4 px-3'>
-        <a href='/' class='flex items-center pl-2.5 mb-5'>
-            <span class='self-center text-xl font-bold whitespace-nowrap dark:text-white'>DevTools</span>
-        </a>
+        <div class='flex '>
+            <a href='/' class='flex-1 items-center pl-2.5'>
+                <span class='self-center text-xl font-bold whitespace-nowrap dark:text-white'>DevTools</span>
+            </a>
+            <div class='md:hidden' @onclick='ChangeIsHidden'>
+                <i class='fa-solid fa-bars'></i>
+            </div>
+        </div>
 
-        <ul class='space-y-2'>
+        <ul class='space-y-2 md:block @DropDownClass mt-5'>
             <li>
                 <a href='#' class='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                     <i class='fa-solid fa-house'></i>
@@ -13,10 +18,10 @@
             </li>
 
             <NavBarDropDown LinkText='Encoding' IconClass='fa-solid fa-suitcase'>
-                <NavBarDropDownItem LinkAddress='/Base64/Encode' LinkText='Base64 Encode' />
-                <NavBarDropDownItem LinkAddress='/Base64/Decode' LinkText='Base64 Decode' />
-                <NavBarDropDownItem LinkAddress='/Url/Encode' LinkText='Url Encode' />
-                <NavBarDropDownItem LinkAddress='/Url/Decode' LinkText='Url Decode' />
+                <NavBarDropDownItem LinkAddress='/Base64/Encode' LinkText='Base64 Encode'/>
+                <NavBarDropDownItem LinkAddress='/Base64/Decode' LinkText='Base64 Decode'/>
+                <NavBarDropDownItem LinkAddress='/Url/Encode' LinkText='Url Encode'/>
+                <NavBarDropDownItem LinkAddress='/Url/Decode' LinkText='Url Decode'/>
             </NavBarDropDown>
 
             @* <li> *@
@@ -28,25 +33,33 @@
             @* </li> *@
 
             <NavBarDropDown LinkText='Generators' IconClass='fa-solid fa-wand-magic-sparkles'>
-                <NavBarDropDownItem LinkAddress='/Generator/Guid' LinkText='Guid Generator' />
-                <NavBarDropDownItem LinkAddress='/Generator/LoremIpsum' LinkText='Lorem Ipsum' />
-                <NavBarDropDownItem LinkAddress='/Generator/Csv' LinkText='Csv' />
+                <NavBarDropDownItem LinkAddress='/Generator/Guid' LinkText='Guid Generator'/>
+                <NavBarDropDownItem LinkAddress='/Generator/LoremIpsum' LinkText='Lorem Ipsum'/>
+                <NavBarDropDownItem LinkAddress='/Generator/Csv' LinkText='Csv'/>
             </NavBarDropDown>
 
             <NavBarDropDown LinkText='Cryptography' IconClass='fa-solid fa-lock'>
-                <NavBarDropDownItem LinkAddress='/Cryptography/Md5' LinkText='Md5' />
-                <NavBarDropDownItem LinkAddress='/Cryptography/Sha1' LinkText='Sha1' />
-                <NavBarDropDownItem LinkAddress='/Cryptography/Sha256' LinkText='Sha256' />
-                <NavBarDropDownItem LinkAddress='/Cryptography/Sha512' LinkText='Sha512' />
+                <NavBarDropDownItem LinkAddress='/Cryptography/Md5' LinkText='Md5'/>
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha1' LinkText='Sha1'/>
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha256' LinkText='Sha256'/>
+                <NavBarDropDownItem LinkAddress='/Cryptography/Sha512' LinkText='Sha512'/>
             </NavBarDropDown>
 
             <NavBarDropDown LinkText='Buckets' IconClass='fa-solid fa-bucket'>
-                <NavBarDropDownItem LinkAddress='/RequestBucket/Create' LinkText='Requests' />
+                <NavBarDropDownItem LinkAddress='/RequestBucket/Create' LinkText='Requests'/>
             </NavBarDropDown>
-            
+
             <NavBarDropDown LinkText='Validators' IconClass='fa-solid fa-magnifying-glass'>
-                <NavBarDropDownItem LinkAddress='/Validators/Regex' LinkText='Regex' />
+                <NavBarDropDownItem LinkAddress='/Validators/Regex' LinkText='Regex'/>
             </NavBarDropDown>
         </ul>
     </div>
 </aside>
+
+@code{
+
+    private bool _isHidden = true;
+    private void ChangeIsHidden() => _isHidden = !_isHidden;
+    public string DropDownClass => _isHidden ? "sm:hidden" : "";
+
+}
