@@ -82,7 +82,7 @@
             return;
         
         await EncodingService.Add(new UrlDecode(_input, _output));
-        StateHasChanged();
+        await ReloadTable();
     }
 
     protected override async Task OnInitializedAsync() => await ReloadTable();

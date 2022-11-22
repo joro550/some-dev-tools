@@ -13,12 +13,5 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddTransient(typeof(EncodingService<>));
 builder.Services.AddTransient<IClipboard, Clipboard>();
 
-builder.Services.AddSingleton(_ => new Config { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 await builder.Build().RunAsync();
-
-
-public class Config
-{
-    public Uri BaseAddress { get; set; }
-}

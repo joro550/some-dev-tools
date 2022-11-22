@@ -1,0 +1,10 @@
+﻿<ul class='list-disc pl-5 mb-8 text-lg font-normal text-gray-500 sm:px-16 xl:px-48 dark:text-gray-300'>
+    @ChildContent
+</ul>
+
+@code{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+        = builder => builder.Default();
+
+}
