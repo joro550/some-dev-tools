@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddSingleton<FirestoreDb>(_ => db);
 builder.Services.AddTransient<IFirestoreProvider, FirestoreProvider>();
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
