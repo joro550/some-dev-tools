@@ -1,8 +1,10 @@
-﻿<p class='mb-3 font-light text-gray-500 dark:text-gray-400'>
+﻿<li>
     @ChildContent
-</p>
+</li>
+
 
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+        = builder => builder.Default();
 }

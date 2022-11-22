@@ -13,10 +13,4 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="34.0.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Http.Features">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.0-rc.2.22476.2\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>

@@ -71,7 +71,6 @@
     {
         if(string.IsNullOrWhiteSpace(value))
             return;
-
         _output = HttpUtility.UrlEncode(value);
     }
     
@@ -81,7 +80,7 @@
             return;
         
         await EncodingService.Add(new UrlEncode(_input, _output));
-        StateHasChanged();
+        await ReloadTable();
     }
 
     protected override async Task OnInitializedAsync() => await ReloadTable();
