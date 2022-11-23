@@ -19,8 +19,13 @@ public class FirestoreProvider : IFirestoreProvider
 
     public async Task<Option<T>> AddOrUpdate<T>(T entity, CancellationToken ct) where T : IPersistentObject, new()
     {
-        var collection = _fireStoreDb.Collection(entity.CollectionName());
+        // If this record should have been deleted then we don't want to update it
+        var timestamp = Timestamp.FromDateTime(DateTime.UtcNow);
+        if (timestamp >= entity.TimeStamp)
+            return Option<T>.None;
 
+        // Get the collection and add if it doesn't exist
+        var collection = _fireStoreDb.Collection(entity.CollectionName());
         if (string.IsNullOrEmpty(entity.Id))
         {
             var reference = await collection.AddAsync(entity, ct);
