@@ -1,4 +1,5 @@
-﻿using DevTools.Shared;
+﻿using AutoMapper;
+using DevTools.Shared;
 using DevTools.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,21 +8,26 @@ namespace DevTools.Server.Controllers;
 [ApiController, Route("api/bucket")]
 public class BucketController : ControllerBase
 {
-    private readonly IRepository<CustomHttpRequest> _repo;
+    private readonly IMapper _mapper;
+    private readonly IRepository<Bucket> _repo;
 
-    public BucketController(IRepository<CustomHttpRequest> repo) 
-        => _repo = repo;
+    public BucketController(IRepository<Bucket> repo, IMapper mapper)
+    {
+        _repo = repo;
+        _mapper = mapper;
+    }
 
     [HttpPost]
-    public IActionResult CreateAsync(CreateBucketRequest request)
-    {
-        var id = $"{request.Prefix}-{Guid.NewGuid():N}";
-        _repo.Create(id);
+    public async Task<IActionResult> CreateAsync(CreateBucketRequest request) 
+        => Ok(new CreateBucketResponse(await _repo.Create()));
 
-        return Ok(new CreateBucketResponse(id));
-    }
-    
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetRequests([FromRoute] string id) 
-        => Ok(await _repo.GetAsync(id));
+    public async Task<IActionResult> GetRequests([FromRoute] string id)
+    {
+        var buckets = await _repo.GetAsync(id);
+        var requests = buckets
+            .Some(b => b.Requests)
+            .None(() => new List<CustomHttpRequestEntity>());
+        return Ok(_mapper.Map<List<CustomHttpRequestEntity>, List<CustomHttpRequest>>(requests));
+    }
 }

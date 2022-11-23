@@ -1,39 +1,75 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using LanguageExt;
+using static LanguageExt.Prelude;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DevTools.Server.Data;
 
-public interface IRepository<T>
+public interface IRepository<T> where T : IPersistentObject, new()
 {
-    void Create(string id);
-    Task AddAsync(string id, T item);
-    Task<List<T>> GetAsync(string id);
+    Task<string> Create();
+    Task<Option<T>> GetAsync(string id);
+    Task<Unit> UpdateAsync(T item);
 }
 
-public class Repository<T> : IRepository<T>
+public class Repository<T> : IRepository<T> where T : IPersistentObject, new()
 {
     private readonly IMemoryCache _memoryCache;
+    private readonly IFirestoreProvider _firestoreProvider;
 
-    public Repository(IMemoryCache memoryCache) 
-        => _memoryCache = memoryCache;
-
-    public async Task<List<T>> GetAsync(string id) 
-        => await GetCacheItem(Key(id));
-
-    public void Create(string id) 
-        => _memoryCache.Set(Key(id), new List<T>());
-
-    public async Task AddAsync(string id, T item)
+    public Repository(IMemoryCache memoryCache, IFirestoreProvider firestoreProvider)
     {
-        var key = Key(id);
-        var cacheItem = await GetCacheItem(key);
+        _memoryCache = memoryCache;
+        _firestoreProvider = firestoreProvider;
+    }
 
-        cacheItem.Add(item);
-        _memoryCache.Set(key, cacheItem);
+    public async Task<string> Create()
+    {
+        var item = await _firestoreProvider.AddOrUpdate(new T());
+        return item
+            .Map(x => _memoryCache.Set(Key(x.Id), x))
+            .Some(x => x.Id)
+            .None(string.Empty);
+    }
+
+    public async Task<Unit> UpdateAsync(T item)
+    {
+        var dbItem = await _firestoreProvider.AddOrUpdate(item);
+        return dbItem
+            .Map(x => _memoryCache.Set(Key(x.Id), x))
+            .Some(_ => unit)
+            .None(unit);
+    }
+
+    public async Task<Option<T>> GetAsync(string id)
+    {
+        var cacheItem = await GetCacheItem(Key(id))
+            .IfNoneAsync(async () =>
+            {
+                // If we don't have a value in cache check the database
+                var val = await _firestoreProvider.GetAsync<T>(id);
+
+                // If there is a value update the cache if not return a default value
+                return val
+                    .Some(v => _memoryCache.Set(Key(id), v))
+                    .None(() => new T());
+            });
+
+        
+        return !string.Equals(cacheItem.Id, id, StringComparison.InvariantCulture) 
+            ? None 
+            : cacheItem;
     }
 
     private static string Key(string id) => $"{typeof(T).Name}/{id}";
-
-    private async Task<List<T>> GetCacheItem(string key) =>
-        await _memoryCache.GetOrCreateAsync(key,
-            _ => Task.FromResult(new List<T>())) ?? new List<T>();
+    
+    /// <summary>
+    /// The in memory cache can return null so we need to isolate this so it returns a None value
+    /// </summary>
+    /// <param name="key">The key we're expecting it to be in</param>
+    /// <returns>Option of item</returns>
+    private Option<T> GetCacheItem(string key)
+    {
+        var cacheItem = _memoryCache.Get<T>(key);
+        return cacheItem == null ? None : cacheItem;
+    }
 }
