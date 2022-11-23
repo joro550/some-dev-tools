@@ -41,8 +41,8 @@ public class Repository<T> : IRepository<T> where T : IPersistentObject, new()
         var cacheItem = await GetCacheItem(Key(id))
             .IfNoneAsync(async () =>
             {
-                // If we don't have a value check the database
-                var val = await _firestoreProvider.Get<T>(id);
+                // If we don't have a value in cache check the database
+                var val = await _firestoreProvider.GetAsync<T>(id);
 
                 // If there is a value update the cache if not return a default value
                 return val
@@ -57,5 +57,15 @@ public class Repository<T> : IRepository<T> where T : IPersistentObject, new()
     }
 
     private static string Key(string id) => $"{typeof(T).Name}/{id}";
-    private Option<T> GetCacheItem(string key) => _memoryCache.Get<T>(key);
+    
+    /// <summary>
+    /// The in memory cache can return null so we need to isolate this so it returns a None value
+    /// </summary>
+    /// <param name="key">The key we're expecting it to be in</param>
+    /// <returns>Option of item</returns>
+    private Option<T> GetCacheItem(string key)
+    {
+        var cacheItem = _memoryCache.Get<T>(key);
+        return cacheItem == null ? None : cacheItem;
+    }
 }
