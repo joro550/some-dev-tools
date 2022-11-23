@@ -6,10 +6,10 @@ namespace DevTools.Server.Data;
 
 public interface IFirestoreProvider
 {
-    Task<string> AddOrUpdate<T>(T entity, CancellationToken ct = default) where T : IPersistentObject;
-    Task<Option<T>> GetAsync<T>(string id, CancellationToken ct = default) where T : IPersistentObject;
-    Task<IReadOnlyCollection<T>> GetAll<T>(CancellationToken ct = default) where T : IPersistentObject;
-    Task<IReadOnlyCollection<T>> WhereEqualTo<T>(string fieldPath, object value, CancellationToken ct = default) where T : IPersistentObject;
+    Task<Option<T>> AddOrUpdate<T>(T entity, CancellationToken ct = default) where T : IPersistentObject, new();
+    Task<Option<T>> GetAsync<T>(string id, CancellationToken ct = default) where T : IPersistentObject, new();
+    Task<IReadOnlyCollection<T>> GetAll<T>(CancellationToken ct = default) where T : IPersistentObject, new();
+    Task<IReadOnlyCollection<T>> WhereEqualTo<T>(string fieldPath, object value, CancellationToken ct = default) where T : IPersistentObject, new();
 }
 
 public class FirestoreProvider : IFirestoreProvider
@@ -17,30 +17,44 @@ public class FirestoreProvider : IFirestoreProvider
     private readonly FirestoreDb _fireStoreDb;
     public FirestoreProvider(FirestoreDb fireStoreDb) => _fireStoreDb = fireStoreDb;
 
-    public async Task<string> AddOrUpdate<T>(T entity, CancellationToken ct) where T : IPersistentObject
+    public async Task<Option<T>> AddOrUpdate<T>(T entity, CancellationToken ct) where T : IPersistentObject, new()
     {
-        var document = _fireStoreDb.Collection(T.CollectionName).Document(entity.Id);
-        await document.SetAsync(entity, cancellationToken: ct);
-        return entity.Id;
+        var collection = _fireStoreDb.Collection(entity.CollectionName());
+
+        if (string.IsNullOrEmpty(entity.Id))
+        {
+            var reference = await collection.AddAsync(entity, ct);
+            return await GetAsync<T>(reference.Id, ct);
+        }
+
+        await collection
+            .Document(entity.Id)
+            .SetAsync(entity, cancellationToken: ct);
+        return entity;
+
     }
 
-    public async Task<Option<T>> GetAsync<T>(string id, CancellationToken ct) where T : IPersistentObject
+    public async Task<Option<T>> GetAsync<T>(string id, CancellationToken ct) where T : IPersistentObject, new()
     {
-        var document = _fireStoreDb.Collection(T.CollectionName).Document(id);
+        var item = new T();
+        
+        var document = _fireStoreDb.Collection(item.CollectionName()).Document(id);
         var snapshot = await document.GetSnapshotAsync(ct);
         return snapshot.ConvertTo<T>();
     }
 
-    public async Task<IReadOnlyCollection<T>> GetAll<T>(CancellationToken ct) where T : IPersistentObject
+    public async Task<IReadOnlyCollection<T>> GetAll<T>(CancellationToken ct) where T : IPersistentObject, new()
     {
-        var collection = _fireStoreDb.Collection(T.CollectionName);
+        var item = new T();
+        var collection = _fireStoreDb.Collection(item.CollectionName());
         var snapshot = await collection.GetSnapshotAsync(ct);
         return snapshot.Documents.Select(x => x.ConvertTo<T>()).ToList();
     }
 
-    public async Task<IReadOnlyCollection<T>> WhereEqualTo<T>(string fieldPath, object value, CancellationToken ct) where T : IPersistentObject
+    public async Task<IReadOnlyCollection<T>> WhereEqualTo<T>(string fieldPath, object value, CancellationToken ct) where T : IPersistentObject, new()
     {
-        var whereEqualTo = _fireStoreDb.Collection(T.CollectionName)
+        var item = new T();
+        var whereEqualTo = _fireStoreDb.Collection(item.CollectionName())
             .WhereEqualTo(fieldPath, value);
         
         return await GetList<T>(whereEqualTo, ct);

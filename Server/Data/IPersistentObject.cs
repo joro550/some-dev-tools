@@ -3,6 +3,7 @@
 public interface IPersistentObject
 {
     public string Id { get; set; }
+
+    string CollectionName();
     
-    static abstract string CollectionName { get; }
 }

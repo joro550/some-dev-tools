@@ -4,10 +4,13 @@ using Google.Cloud.Firestore;
 
 namespace DevTools.Server.Data;
 
+[FirestoreData]
 public class Bucket : IPersistentObject
 {
     [FirestoreDocumentId]
     public string Id { get; set; }= string.Empty;
+
+    string IPersistentObject.CollectionName() => "buckets";
 
     [FirestoreProperty]
     public Timestamp TimeStamp { get; set; }
@@ -16,12 +19,13 @@ public class Bucket : IPersistentObject
     [FirestoreProperty]
     public string ResponseTemplate { get; set; } = string.Empty;
 
+    [FirestoreProperty]
     public List<CustomHttpRequestEntity> Requests { get; set; } 
         = new();
 
-    public static string CollectionName => "buckets";
 }
 
+[FirestoreData]
 [AutoMap(typeof(CustomHttpRequest), ReverseMap = true)]
 public class CustomHttpRequestEntity
 {
@@ -36,9 +40,9 @@ public class CustomHttpRequestEntity
     public string? ContentType { get; set; }
 
     [FirestoreProperty]
-    public IEnumerable<KeyValuePair<string, string>> Cookies { get; set; }
-        = new Dictionary<string, string>();
-
+    public Dictionary<string, string> Cookies { get; set; }
+        = new();
+    
     [FirestoreProperty]
     public Dictionary<string, List<string?>> Query { get; set; } 
         = new();

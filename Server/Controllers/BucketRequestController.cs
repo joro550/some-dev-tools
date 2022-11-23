@@ -41,6 +41,9 @@ public class BucketRequestController : ControllerBase
 
     private async Task<Unit> AddRequestToBucket(Bucket bucket, CustomHttpRequestEntity customHttpRequestEntity)
     {
+        if (bucket.Requests.Count >= 20)
+            return Unit.Default;
+
         bucket.Requests.Add(customHttpRequestEntity);
         await _repo.UpdateAsync(bucket);
         return Unit.Default;

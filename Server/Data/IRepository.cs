@@ -24,16 +24,20 @@ public class Repository<T> : IRepository<T> where T : IPersistentObject, new()
 
     public async Task<string> Create()
     {
-        var id = await _firestoreProvider.AddOrUpdate(new T());
-        _memoryCache.Set(Key(id), new T());
-        return id;
+        var item = await _firestoreProvider.AddOrUpdate(new T());
+        return item
+            .Map(x => _memoryCache.Set(Key(x.Id), x))
+            .Some(x => x.Id)
+            .None(string.Empty);
     }
 
     public async Task<Unit> UpdateAsync(T item)
     {
-        await _firestoreProvider.AddOrUpdate(item);
-        _memoryCache.Set(Key(item.Id), item);
-        return unit;
+        var dbItem = await _firestoreProvider.AddOrUpdate(item);
+        return dbItem
+            .Map(x => _memoryCache.Set(Key(x.Id), x))
+            .Some(_ => unit)
+            .None(unit);
     }
 
     public async Task<Option<T>> GetAsync(string id)
