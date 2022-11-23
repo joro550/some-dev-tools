@@ -6,7 +6,7 @@ namespace DevTools.Server.Data;
 
 public interface IFirestoreProvider
 {
-    Task<Unit> AddOrUpdate<T>(T entity, CancellationToken ct = default) where T : IPersistentObject;
+    Task<string> AddOrUpdate<T>(T entity, CancellationToken ct = default) where T : IPersistentObject;
     Task<Option<T>> Get<T>(string id, CancellationToken ct = default) where T : IPersistentObject;
     Task<IReadOnlyCollection<T>> GetAll<T>(CancellationToken ct = default) where T : IPersistentObject;
     Task<IReadOnlyCollection<T>> WhereEqualTo<T>(string fieldPath, object value, CancellationToken ct = default) where T : IPersistentObject;
@@ -17,11 +17,11 @@ public class FirestoreProvider : IFirestoreProvider
     private readonly FirestoreDb _fireStoreDb;
     public FirestoreProvider(FirestoreDb fireStoreDb) => _fireStoreDb = fireStoreDb;
 
-    public async Task<Unit> AddOrUpdate<T>(T entity, CancellationToken ct) where T : IPersistentObject
+    public async Task<string> AddOrUpdate<T>(T entity, CancellationToken ct) where T : IPersistentObject
     {
         var document = _fireStoreDb.Collection(typeof(T).Name).Document(entity.Id);
         await document.SetAsync(entity, cancellationToken: ct);
-        return Unit.Default;
+        return entity.Id;
     }
 
     public async Task<Option<T>> Get<T>(string id, CancellationToken ct) where T : IPersistentObject

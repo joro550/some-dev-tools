@@ -59,7 +59,7 @@
         try
         {
             var response = await Http.PostAsJsonAsync("api/bucket",
-                new CreateBucketRequest { Prefix = "bucket" });
+                new CreateBucketRequest());
 
             var responseMessage = await response.Content.ReadFromJsonAsync<CreateBucketResponse>();
             Navigation.NavigateTo($"/RequestBucket/Create/{responseMessage!.Id}");

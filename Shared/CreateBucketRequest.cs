@@ -2,5 +2,4 @@
 
 public class CreateBucketRequest
 {
-    public string? Prefix { get; set; }
 }
