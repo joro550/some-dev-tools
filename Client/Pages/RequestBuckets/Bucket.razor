@@ -10,7 +10,8 @@
 </h1>
 
 <p class='mb-14 font-normal text-gray-500 dark:text-white'>
-    These request buckets are saved in memory (at the moment) so they may dissapear randomly 
+    These request buckets last around 2 hours after that no new requests go into the bucket and they have an upper limit of 20 
+    requests per bucket - these buckets are just for initial testing only
 </p>
 
 @if (string.IsNullOrEmpty(Id))
