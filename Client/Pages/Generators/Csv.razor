@@ -4,7 +4,8 @@
 @using System.Dynamic
 @using System.Text
 @using Bogus.DataSets
-@using DevTools.Shared
+@using DevTools.Client.Data
+@using DevTools.Client.Pages.DataComponents
 @using Microsoft.AspNetCore.Components
 @inject IJSRuntime Js
 
@@ -15,6 +16,7 @@
 <p class='mb-8 font-normal text-gray-500 dark:text-white'>
     This page is being powered by an open source liraries: 
 </p>
+
 <ul class='list-disc mb-8 font-normal text-gray-500 dark:text-white'>
     <li><a target='_blank' class='text-blue-200' href='https://github.com/bchavez/Bogus'>Bogus</a></li>
     <li><a target='_blank' class='text-blue-200' href='https://github.com/JoshClose/CsvHelper'>CsvHelper</a></li>
@@ -75,6 +77,8 @@
                                     <option value='@dataType'>@dataType</option>
                                 }
                             </select>
+                            
+                            <DynamicComponent @ref="column.Component" Type="@GetTypeFor(column.Type)" />
                         </div>
                     </td>
                 </tr>
@@ -124,4 +128,14 @@
     }
 
     private void Remove(GeneratorModel column) => _columns.Remove(column);
+
+    private static Type GetTypeFor(DataType columnType)
+    {
+        return columnType switch
+        {
+            DataType.FirstName => typeof(NameDataGenerator),
+            _ => typeof(GuidDataGenerator)
+        };
+    }
+
 }

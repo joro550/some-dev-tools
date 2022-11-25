@@ -617,10 +617,6 @@ video {
   margin-left: 0.75rem;
 }
 
-.mb-12 {
-  margin-bottom: 3rem;
-}
-
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -661,20 +657,16 @@ video {
   width: 100%;
 }
 
+.w-2 {
+  width: 0.5rem;
+}
+
 .w-6 {
   width: 1.5rem;
 }
 
 .w-14 {
   width: 3.5rem;
-}
-
-.w-1 {
-  width: 0.25rem;
-}
-
-.w-2 {
-  width: 0.5rem;
 }
 
 .max-w-screen-xl {
@@ -936,10 +928,6 @@ video {
 
 .font-medium {
   font-weight: 500;
-}
-
-.font-light {
-  font-weight: 300;
 }
 
 .uppercase {
