@@ -7,7 +7,7 @@ namespace DevTools.Client.Data;
 public enum DataType
 {
     Guid,
-    LoremWord,
+    Lorem,
     FirstName,
     LastName, 
     Email,
@@ -39,7 +39,7 @@ public sealed class GeneratorModel
         return Type switch 
         {
             DataType.Guid => Guid.NewGuid().ToString(),
-            DataType.LoremWord => lorem.Word(),
+            DataType.Lorem => lorem.Word(),
             DataType.FirstName => person.FirstName,
             DataType.LastName => person.FirstName,
             DataType.Email => person.Email,

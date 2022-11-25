@@ -1,7 +1,7 @@
 using DevTools.Server.Data;
 using Google.Cloud.Firestore;
 
-var db = await FirestoreDb.CreateAsync();
+var db = await FirestoreDb.CreateAsync("98595510421");
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

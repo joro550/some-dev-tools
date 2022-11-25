@@ -133,6 +133,7 @@
     {
         return columnType switch
         {
+            DataType.Lorem => typeof(LoremDataGenerator),
             DataType.FirstName => typeof(NameDataGenerator),
             _ => typeof(GuidDataGenerator)
         };
