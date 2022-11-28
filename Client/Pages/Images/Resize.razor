@@ -1,0 +1,36 @@
+﻿@page "/Resize"
+@using System.Text
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Processing
+@using SixLabors.ImageSharp.Formats.Png
+
+@inject IJSRuntime Js
+
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Image Resizer
+</h1>
+
+
+<InputFile OnChange='@LoadFiles' multiple />
+
+
+
+@code {
+    private IBrowserFile? _file;
+    
+    
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        _file = e.File;
+        
+        var image = await Image.LoadAsync(_file.OpenReadStream());
+        image.Mutate(x => x.Resize(image.Width / 2, image.Height / 2));
+
+        var contents = image.ToBase64String(PngFormat.Instance);
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(contents));
+
+        var fileName = $"{DateTime.UtcNow:s}.png";
+        using var streamRef = new DotNetStreamReference(stream: stream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+}
