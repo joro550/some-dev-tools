@@ -135,6 +135,11 @@
         {
             DataType.Lorem => typeof(LoremDataGenerator),
             DataType.FirstName => typeof(NameDataGenerator),
+            DataType.LastName => typeof(LastNameDataGenerator),
+            DataType.Email => typeof(EmailDataGenerator),
+            DataType.DateOfBirth => typeof(DateOfBirthDataGenerator),
+            DataType.UserName => typeof(UsernameDataGenerator),
+            DataType.Number => typeof(NumberDataGenerator),
             _ => typeof(GuidDataGenerator)
         };
     }
