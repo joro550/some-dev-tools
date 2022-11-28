@@ -1,0 +1,59 @@
+﻿@page "/Image/Resize"
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Processing
+
+@inject IJSRuntime Js
+
+<h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
+    Image Resizer
+</h1>
+
+<div class='mb-4'>
+    <label class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Upload file</label>
+    <InputFile class='block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 
+    dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
+               OnChange='@LoadFiles' />
+</div>
+
+<div class='mt-6'>
+    <div class='relative z-0 mb-6 w-full group'>
+        <input @bind='_width' @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+            Width
+        </label>
+    </div>
+
+    <div class='relative z-0 mb-6 w-full group'>
+        <input @bind='_height' @bind:event='oninput' type="text" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+        <label class='peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6'>
+            Height
+        </label>
+    </div>
+
+    <button @onclick='Export' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+        Export
+    </button>
+</div>
+
+@code {
+    private IBrowserFile? _file;
+    private int _width = 0;
+    private int _height = 0;
+    
+    private void LoadFiles(InputFileChangeEventArgs e) => _file = e.File;
+
+    private async Task Export()
+    {
+        var image = await Image.LoadAsync(_file.OpenReadStream());
+        image.Mutate(x => x.Resize(_width, _height));
+
+        using var stream = new MemoryStream();
+        await image.SaveAsPngAsync(stream);
+        stream.Position = 0;
+
+        var fileName = $"{DateTime.UtcNow:s}.png";
+        using var streamRef = new DotNetStreamReference(stream: stream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+}
