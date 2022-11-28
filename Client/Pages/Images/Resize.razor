@@ -44,6 +44,10 @@
 
     private async Task Export()
     {
+        if (_file == null)
+            return;
+        
+        
         var image = await Image.LoadAsync(_file.OpenReadStream());
         image.Mutate(x => x.Resize(_width, _height));
 
