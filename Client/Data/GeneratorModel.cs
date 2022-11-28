@@ -1,12 +1,13 @@
 ﻿using Bogus;
 using Bogus.DataSets;
+using Microsoft.AspNetCore.Components;
 
-namespace DevTools.Shared;
+namespace DevTools.Client.Data;
 
 public enum DataType
 {
     Guid,
-    LoremWord,
+    Lorem,
     FirstName,
     LastName, 
     Email,
@@ -25,16 +26,20 @@ public sealed class GeneratorModel
         
     public string Name { get; set; }
     public DataType Type { get; set; }
+    public DynamicComponent? Component { get; set; }
 
     public object GetData()
     {
+        if (Component?.Instance is IDataComponent dataComponent)
+            return dataComponent.GetData();
+
         var lorem = new Lorem();
         var person = new Person();
         var faker = new Faker();
         return Type switch 
         {
             DataType.Guid => Guid.NewGuid().ToString(),
-            DataType.LoremWord => lorem.Word(),
+            DataType.Lorem => lorem.Word(),
             DataType.FirstName => person.FirstName,
             DataType.LastName => person.FirstName,
             DataType.Email => person.Email,
@@ -44,4 +49,9 @@ public sealed class GeneratorModel
             _ => string.Empty
         };
     }
+}
+
+public interface IDataComponent
+{
+    public object GetData();
 }

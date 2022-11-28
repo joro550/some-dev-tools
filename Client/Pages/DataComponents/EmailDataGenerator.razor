@@ -1,0 +1,18 @@
+﻿@using Bogus
+@using DevTools.Client.Data
+@implements DevTools.Client.Data.IDataComponent
+
+<div class='z-0 mb-6 w-full'>
+    <label class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Language</label>
+    <select @bind='_locale' class='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
+        @foreach (var dataType in Enum.GetValues<BogusLanguage>())
+        {
+            <option value='@dataType.GetLocaleString()'>@dataType</option>
+        }
+    </select>
+</div>
+
+@code {
+    private string _locale = "en";
+    public object GetData() => new Faker(_locale).Person.Email;
+}
