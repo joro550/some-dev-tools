@@ -8,7 +8,7 @@ namespace DevTools.Server.Controllers;
 [ApiController, Route("api/generator/json")]
 public class JsonController : ControllerBase
 {
-    [HttpGet]
+    [HttpPost]
     public IActionResult GetHash([FromQuery]string source, [FromBody] string fileData)
     {
         if (source != "csv") 
@@ -20,7 +20,7 @@ public class JsonController : ControllerBase
         using var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture);
         var records = csvReader.GetRecords<dynamic>()
             .ToList();
+        
         return new JsonResult(records);
     }
-    
 }
