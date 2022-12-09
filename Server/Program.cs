@@ -3,7 +3,7 @@ using Google.Cloud.Firestore;
 
 var db = await FirestoreDb.CreateAsync("testing-366118");
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(o => o.InputFormatters.Insert(o.InputFormatters.Count, new TextPlainInputFormatter()));
 builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
 
