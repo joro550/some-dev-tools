@@ -1,3 +1,4 @@
+using System.Reflection;
 using DevTools.Server.Data;
 using Google.Cloud.Firestore;
 
@@ -6,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(o => o.InputFormatters.Insert(o.InputFormatters.Count, new TextPlainInputFormatter()));
 builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
+
+builder.Services.AddSwaggerGen(x =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -25,6 +32,8 @@ else
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
@@ -32,6 +41,10 @@ app.UseRouting();
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? null;
 app.Run(port == null ? null : $"http://0.0.0.0:{port}");
