@@ -23,16 +23,18 @@ warn('ℹ️ Open {tiltfile_path} in your favorite editor to get started.'.forma
 
 local_resource(
     'build_web',
-    serve_cmd= 'dotnet run --project ./Server/DevTools.Server.csproj',
+    'dotnet build ./Server/DevTools.Server.csproj',
+    serve_cmd= 'dotnet run --project ./Server/DevTools.Server.csproj --no-build',
     ignore= ['./Server/bin', './Server/obj', './Client/bin', './Client/obj'],
-    deps= ['./Server', './Client']
+    deps= ['./Server', './Client'],
+    allow_parallel=True,
 )
-
 
 local_resource(
     'build_css',
-    'npx tailwindcss -c ./Client/tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./Client/wwwroot/css/output.css',
+    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./Client/wwwroot/css/output.css',
     deps= ['./Client'],
-    ignore= ['./Client/bin', './Client/obj'],
+    ignore= ['./Client/bin', './Client/obj', './Client/wwwroot/css/output.css'],
+    allow_parallel=True,
 )
 
