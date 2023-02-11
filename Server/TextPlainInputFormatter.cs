@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.Formatters;
 
+namespace DevTools.Server;
+
 public class TextPlainInputFormatter : InputFormatter
 {
     private const string ContentType = "text/plain";
 
-    public TextPlainInputFormatter()
-    {
-        SupportedMediaTypes.Add(ContentType);
-    }
+    public TextPlainInputFormatter() => SupportedMediaTypes.Add(ContentType);
 
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context)
     {

@@ -1,5 +1,50 @@
-﻿<h3>InputOutputTable</h3>
+﻿@typeparam TItem where TItem : DevTools.Client.Data.InputOutput
+
+@inject IClipboard Clipboard
+
+@if (Data.Any())
+{
+    <div class="mt-3 overflow-x-auto relative  rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="w-2 py-4 px-6"></th>
+                <th scope="col" class="py-3 px-6">
+                    Input
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Output
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var encoding in Data)
+                {
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td scope="row" class="w-2 py-4 px-6 font-medium text-gray-900 dark:text-white">
+                            <button @onclick='async () => await Clipboard.CopyText(encoding.Output)' class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+                                Copy output to clipboard
+                            </button>
+                        </td>
+                        
+                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            @encoding.Input
+                        </th>
+                        <td class="py-4 px-6">
+                            @encoding.Output
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
 
 @code {
-    
+
+    [Parameter]
+    public List<TItem> Data { get; set; }
+        = new();
+
 }

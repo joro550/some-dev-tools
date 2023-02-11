@@ -18,13 +18,13 @@ print("""
    evaluates this file.
 -----------------------------------------------------------------
 """.strip())
-warn('ℹ️ Open {tiltfile_path} in your favorite editor to get started.'.format(
+
+print('Open {tiltfile_path} in your favorite editor to get started.'.format(
     tiltfile_path=config.main_path))
 
 local_resource(
     'build_web',
-    'dotnet build ./Server/DevTools.Server.csproj',
-    serve_cmd= 'dotnet run --project ./Server/DevTools.Server.csproj --no-build',
+    serve_cmd= 'dotnet run --project ./Server/DevTools.Server.csproj',
     ignore= ['./Server/bin', './Server/obj', './Client/bin', './Client/obj'],
     deps= ['./Server', './Client'],
     allow_parallel=True,

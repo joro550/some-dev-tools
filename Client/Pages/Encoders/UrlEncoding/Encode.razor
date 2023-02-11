@@ -1,6 +1,8 @@
 ﻿@page "/Url/Encode"
 @using System.Web
 @using DevTools.Client.Data
+
+@inject IClipboard Clipboard
 @inject EncodingService<UrlEncode> EncodingService
 
 <h1 class='mb-6 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>
@@ -18,37 +20,11 @@
 </div>
 
 <button @onclick='Save' class='text-white mb-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>Save</button>
+<button @onclick='async () => await Clipboard.CopyText(_output)' class='mt-2 mb-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'>
+    Copy output to clipboard
+</button>
 
-@if (_encodings.Any())
-{
-    <div class="mt-3 overflow-x-auto relative  rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="py-3 px-6">
-                        Input
-                    </th>
-                    <th scope="col" class="py-3 px-6">
-                        Output
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var encoding in _encodings)
-                {
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @encoding.Input
-                        </th>
-                        <td class="py-4 px-6">
-                            @encoding.Output
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
+<InputOutputTable Data='@_encodings'/>
 
 @code {
     
