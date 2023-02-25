@@ -1,0 +1,10 @@
+services:
+  web:
+    image: dev_tools
+    ports:
+      - 5001:80
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/App/gcloud/creds.json
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - D:/gcloud:/App/gcloud

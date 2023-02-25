@@ -10,9 +10,8 @@ public class Sha256Controller : ControllerBase
     [HttpGet]
     public string GetHash(string input)
     {
-        using var sha1 = SHA256.Create();
-        var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-        var sb = new StringBuilder(hash.Length * 2);
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(input));
+        var sb = new StringBuilder();
 
         foreach (var b in hash)
             // can be "x2" if you want lowercase

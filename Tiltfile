@@ -1,17 +1,3 @@
-# Welcome to Tilt!
-#   To get you started as quickly as possible, we have created a
-#   starter Tiltfile for you.
-#
-#   Uncomment, modify, and delete any commands as needed for your
-#   project's configuration.
-
-
-# Output diagnostic messages
-#   You can print log messages, warnings, and fatal errors, which will
-#   appear in the (Tiltfile) resource in the web UI. Tiltfiles support
-#   multiline strings and common string operations such as formatting.
-#
-#   More info: https://docs.tilt.dev/api.html#api.warn
 print("""
 -----------------------------------------------------------------
 ✨ Hello Tilt! This appears in the (Tiltfile) pane whenever Tilt
@@ -19,22 +5,30 @@ print("""
 -----------------------------------------------------------------
 """.strip())
 
-print('Open {tiltfile_path} in your favorite editor to get started.'.format(
-    tiltfile_path=config.main_path))
-
 local_resource(
-    'build_web',
-    serve_cmd= 'dotnet run --project ./Server/DevTools.Server.csproj',
+    'publish_web',
+    'dotnet publish ./Server/DevTools.Server.csproj -o out/devtools',
     ignore= ['./Server/bin', './Server/obj', './Client/bin', './Client/obj'],
     deps= ['./Server', './Client'],
     allow_parallel=True,
 )
 
+docker_build(
+    'dev_tools',
+    '/out/devtools',
+    dockerfile='tilt/tilt.Dockerfile',
+    live_update=[
+        sync('/out/devtools', '/App'),
+        restart_container()
+    ]
+)
+
 local_resource(
     'build_css',
-    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./Client/wwwroot/css/output.css',
+    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/devtools/wwwroot/cssoutput.css',
     deps= ['./Client'],
     ignore= ['./Client/bin', './Client/obj', './Client/wwwroot/css/output.css'],
     allow_parallel=True,
 )
 
+docker_compose('./tilt/docker-compose.yml')
