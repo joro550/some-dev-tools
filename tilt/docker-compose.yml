@@ -6,5 +6,6 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/App/gcloud/creds.json
       - ASPNETCORE_ENVIRONMENT=Development
+      - FIRESTORE_EMULATOR_HOST=host.docker.internal:8080
     volumes:
       - D:/gcloud:/App/gcloud

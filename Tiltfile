@@ -13,6 +13,12 @@ local_resource(
     allow_parallel=True,
 )
 
+local_resource(
+    'firebase_emulator',
+    serve_cmd= 'firebase emulators:start',
+    allow_parallel=True
+)
+
 docker_build(
     'dev_tools',
     '/out/devtools',
