@@ -25,7 +25,7 @@ docker_build(
 
 local_resource(
     'build_css',
-    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/devtools/wwwroot/cssoutput.css',
+    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/devtools/wwwroot/css/output.css',
     deps= ['./Client'],
     ignore= ['./Client/bin', './Client/obj', './Client/wwwroot/css/output.css'],
     allow_parallel=True,

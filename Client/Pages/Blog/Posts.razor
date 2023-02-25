@@ -1,0 +1,27 @@
+﻿@page "/Blog"
+@using DevTools.Shared
+@inject HttpClient Client
+
+<div class='grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 md:p-0'>
+    @foreach (var post in _posts)
+    {
+        <div class='border border-black-200 m-2 rounded-xl shadow-lg overflow-hidden flex flex-col'>
+            <a>
+                <img 
+                    src='img/@post.Image' 
+                    alt='@post.ImageAltText' 
+                    width='650' 
+                    height='340'/>
+                <h1 class='dark:text-white p-6'>@post.Title</h1>
+            </a>
+        </div>
+    }
+</div>
+
+@code {
+    private List<Post> _posts = new();
+    
+    protected override async Task OnInitializedAsync() 
+        => _posts = await Client.GetFromJsonAsync<List<Post>>("/api/blog");
+
+}
