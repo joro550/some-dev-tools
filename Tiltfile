@@ -7,7 +7,7 @@ print("""
 
 local_resource(
     'publish_web',
-    'dotnet publish ./Server/DevTools.Server.csproj -o out/devtools',
+    'dotnet publish ./Server/DevTools.Server.csproj -o out/devtools -c Release',
     ignore= ['./Server/bin', './Server/obj', './Client/bin', './Client/obj'],
     deps= ['./Server', './Client'],
     allow_parallel=True,
