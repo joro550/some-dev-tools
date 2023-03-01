@@ -10,6 +10,7 @@ RUN dotnet restore
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && apt-get install -yq nodejs build-essential
 RUN npm install -g npm
 RUN npm install -D tailwindcss
+RUN npm install -D @tailwindcss/typography
 
 # Build and publish a release
 RUN dotnet publish -c Release -o out

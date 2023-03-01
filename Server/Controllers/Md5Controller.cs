@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
@@ -16,5 +16,4 @@ public class Md5Controller : ControllerBase
             sb.Append(t.ToString("X2"));
         return sb.ToString();
     }
-
 }
