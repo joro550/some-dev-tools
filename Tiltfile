@@ -7,10 +7,16 @@ print("""
 
 local_resource(
     'publish_web',
-    'dotnet publish ./Server/DevTools.Server.csproj -o out/devtools',
+    'dotnet publish ./Server/DevTools.Server.csproj -o out/devtools -c Release',
     ignore= ['./Server/bin', './Server/obj', './Client/bin', './Client/obj'],
     deps= ['./Server', './Client'],
     allow_parallel=True,
+)
+
+local_resource(
+    'firebase_emulator',
+    serve_cmd= 'firebase emulators:start',
+    allow_parallel=True
 )
 
 docker_build(
@@ -25,7 +31,7 @@ docker_build(
 
 local_resource(
     'build_css',
-    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/devtools/wwwroot/cssoutput.css',
+    'npx tailwindcss -c ./tailwind.config.js -i ./Client/wwwroot/css/input.css -o ./out/devtools/wwwroot/css/output.css',
     deps= ['./Client'],
     ignore= ['./Client/bin', './Client/obj', './Client/wwwroot/css/output.css'],
     allow_parallel=True,

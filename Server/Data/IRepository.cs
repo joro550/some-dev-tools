@@ -7,6 +7,7 @@ namespace DevTools.Server.Data;
 public interface IRepository<T> where T : IPersistentObject, new()
 {
     Task<string> Create();
+    Task<string> Create(T model);
     Task<Option<T>> GetAsync(string id);
     Task<Unit> UpdateAsync(T item);
 }
@@ -25,6 +26,15 @@ public class Repository<T> : IRepository<T> where T : IPersistentObject, new()
     public async Task<string> Create()
     {
         var item = await _firestoreProvider.AddOrUpdate(new T());
+        return item
+            .Map(x => _memoryCache.Set(Key(x.Id), x))
+            .Some(x => x.Id)
+            .None(string.Empty);
+    }
+
+    public async Task<string> Create(T model)
+    {
+        var item = await _firestoreProvider.AddOrUpdate(model);
         return item
             .Map(x => _memoryCache.Set(Key(x.Id), x))
             .Some(x => x.Id)

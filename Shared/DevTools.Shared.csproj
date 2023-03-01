@@ -12,5 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="Markdig" Version="0.30.4" />
+    <PackageReference Include="YamlDotNet" Version="13.0.1" />
   </ItemGroup>
 </Project>

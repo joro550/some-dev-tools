@@ -1,0 +1,30 @@
+﻿@page "/Blog/{Slug}"
+@using DevTools.Shared
+@inject HttpClient Client
+
+<div class='min-w-screen rounded-xl overflow-hidden'>
+    <img class='h-24 w-64 rounded-xl mx-auto'
+         src='img/@_post.Image' 
+         alt='@_post.ImageAltText' 
+    />
+</div>
+
+<div class='mx-auto dark:text-white-100'>
+    <article class='prose '>
+        <h1 class='pb-3'>@_post.Title</h1>
+        @((MarkupString)_post.Html)
+    </article>
+</div>
+
+@code {
+
+    [Parameter]
+    public string Slug { get; set; }
+        = string.Empty;
+
+    private Post _post 
+        = new();
+
+    protected override async Task OnInitializedAsync() 
+        => _post = await Client.GetFromJsonAsync<Post>($"/api/blog/{Slug}");
+}

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using DevTools.Shared;
 using Google.Cloud.Firestore;
 
@@ -8,9 +8,14 @@ namespace DevTools.Server.Data;
 public class Bucket : IPersistentObject
 {
     [FirestoreDocumentId]
-    public string Id { get; set; }= string.Empty;
+    public string Id { get; set; } = string.Empty;
 
     string IPersistentObject.CollectionName() => "buckets";
+
+    public bool IsBeingDeleted()
+    {
+        return true;
+    }
 
     [FirestoreProperty]
     public Timestamp TimeStamp { get; set; }
@@ -20,7 +25,7 @@ public class Bucket : IPersistentObject
     public string ResponseTemplate { get; set; } = string.Empty;
 
     [FirestoreProperty]
-    public List<CustomHttpRequestEntity> Requests { get; set; } 
+    public List<CustomHttpRequestEntity> Requests { get; set; }
         = new();
 
 }
@@ -29,33 +34,33 @@ public class Bucket : IPersistentObject
 [AutoMap(typeof(CustomHttpRequest), ReverseMap = true)]
 public class CustomHttpRequestEntity
 {
-    
+
     [FirestoreProperty]
-    public string Method { get; set; }= string.Empty;
-    
+    public string Method { get; set; } = string.Empty;
+
     [FirestoreProperty]
-    public string Body { get; set; }= string.Empty;
-    
+    public string Body { get; set; } = string.Empty;
+
     [FirestoreProperty]
     public string? ContentType { get; set; }
 
     [FirestoreProperty]
     public Dictionary<string, string> Cookies { get; set; }
         = new();
-    
+
     [FirestoreProperty]
-    public Dictionary<string, List<string?>> Query { get; set; } 
+    public Dictionary<string, List<string?>> Query { get; set; }
         = new();
-    
+
     [FirestoreProperty]
-    public Dictionary<string, List<string?>> FormCollection { get; set; } 
+    public Dictionary<string, List<string?>> FormCollection { get; set; }
         = new();
-    
+
     [FirestoreProperty]
     public Dictionary<string, object?> RouteValues { get; set; }
         = new();
-    
+
     [FirestoreProperty]
-    public Dictionary<string,List<string?>> Headers { get; set; }
+    public Dictionary<string, List<string?>> Headers { get; set; }
         = new();
 }

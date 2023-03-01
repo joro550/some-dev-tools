@@ -1,4 +1,4 @@
-﻿using Google.Cloud.Firestore;
+using Google.Cloud.Firestore;
 using LanguageExt;
 using Query = Google.Cloud.Firestore.Query;
 
@@ -23,7 +23,8 @@ public class FirestoreProvider : IFirestoreProvider
     {
         // If this record should have been deleted then we don't want to update it
         var timestamp = Timestamp.FromDateTime(DateTime.UtcNow);
-        if (timestamp >= entity.TimeStamp)
+        var shouldBeDeletedAfterTime = entity.IsBeingDeleted();
+        if (shouldBeDeletedAfterTime && timestamp >= entity.TimeStamp)
             return Option<T>.None;
 
         // Get the collection and add if it doesn't exist

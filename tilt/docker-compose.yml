@@ -4,7 +4,8 @@ services:
     ports:
       - 5001:80
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/App/gcloud/creds.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/App/creds.json
       - ASPNETCORE_ENVIRONMENT=Development
+      - FIRESTORE_EMULATOR_HOST=host.docker.internal:8080
     volumes:
-      - D:/gcloud:/App/gcloud
+      - "D:/gcloud:/App"
