@@ -3,9 +3,9 @@ using DevTools.Server;
 using DevTools.Server.Data;
 using Google.Cloud.Firestore;
 
-var db = await FirestoreDb.CreateAsync("testing-366118");
+var db2 = new FirestoreDbBuilder() { ProjectId = "testing-366118" };
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews(o => 
+builder.Services.AddControllersWithViews(o =>
     o.InputFormatters.Insert(o.InputFormatters.Count, new TextPlainInputFormatter()));
 builder.Services.AddRazorPages();
 builder.Services.AddMemoryCache();
@@ -18,7 +18,12 @@ builder.Services.AddSwaggerGen(x =>
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddSingleton<FirestoreDb>(_ => db);
+if (builder.Environment.IsDevelopment())
+{
+    db2.EmulatorDetection = Google.Api.Gax.EmulatorDetection.EmulatorOnly;
+}
+
+builder.Services.AddSingleton<FirestoreDb>(_ => db2.Build());
 builder.Services.AddTransient<IFirestoreProvider, FirestoreProvider>();
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 

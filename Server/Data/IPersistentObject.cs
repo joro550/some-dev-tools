@@ -1,4 +1,4 @@
-﻿using Google.Cloud.Firestore;
+using Google.Cloud.Firestore;
 
 namespace DevTools.Server.Data;
 
@@ -8,5 +8,5 @@ public interface IPersistentObject
     public Timestamp TimeStamp { get; set; }
 
     string CollectionName();
-    
+    bool IsBeingDeleted();
 }

@@ -1,4 +1,4 @@
-﻿using DevTools.Server.Data;
+using DevTools.Server.Data;
 using DevTools.Shared;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +8,10 @@ namespace DevTools.Server.Controllers;
 public class ContactController : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(ContactRequest request, 
-        IRepository<Feedback> feedbackRepo)
+    public async Task<IActionResult> CreateAsync(ContactRequest request,
+        IRepository<Feedback> feedbackRepo, ILogger<ContactController> logger)
     {
-        await feedbackRepo.Create(new Feedback { Message = request.Feedback});
+        await feedbackRepo.Create(new Feedback { Message = request.Feedback });
         return Ok();
     }
 }
