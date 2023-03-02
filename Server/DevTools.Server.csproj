@@ -28,5 +28,7 @@
     <ProjectReference Include="..\Shared\DevTools.Shared.csproj" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <Watch Include="..\Client\**\*.razor" />
+  </ItemGroup>
 </Project>
